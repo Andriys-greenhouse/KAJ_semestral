@@ -1,7 +1,7 @@
-* {
-    background-color: darkslategray;
-}
+body {
+    --bg-color: #0f0f0f;
+    --fg-color: floralwhite;
 
-h1 {
-    color: white;
+    background-color: var(--bg-color);
+    color: var(--fg-color);
 }
