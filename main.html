@@ -5,6 +5,39 @@
         <link rel="stylesheet" href="basic.css"/>
     </head>
     <body>
-        <h1>Good morning, Holy Spirit.</h1>
+        <div id="main-page-div">
+            <div id="top-bar">
+                <h1>GTimer</h1>
+                <div>
+                    <label id="time-label"></label>
+                    <label id="timezone-label"></label>
+                    <label id="connection-status-label"></label>
+                </div>
+            </div>
+            <div id="side-bar">
+                <label>displayed:</label>
+            </div>
+            <div id="timer-list">
+            </div>
+        </div>
+        <div id="edit-page-div">
+        </div>
     </body>
+
+    <template>
+        <input type="text"/>
+        <label>
+            time: <input type="text" placeholder="h"/> : <input type="text" placeholder="mm"/> : <input type="text" placeholder="ss"/>
+        </label>
+        <div>
+            style: <label><input type="radio"/> horizontal</label>
+                   <label><input type="radio"/> vertical</label>
+        </div>
+        <div>
+            <button>discard</button>
+            <button>save</button>
+        </div>
+    </template>
+
+    <script type="text/javascript" src="main.js" defer="true"></script>
 </html>
