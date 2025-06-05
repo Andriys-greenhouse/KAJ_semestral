@@ -28,10 +28,22 @@ export class TimerSegment {
     }
 }
 
+export class TimerRun {
+    timer: Timer;
+    startPoint: Date;
+
+    constructor(timer: Timer) {
+        this.timer = timer;
+        this.startPoint = new Date(Date.now());
+    }
+}
+
 export enum TimerStyle {
     Vertical,
     Horizontal
 }
+
+export type timerId_t = string;
 
 export class Timer {
     static defaultSegments: TimerSegment[] = [
@@ -40,7 +52,7 @@ export class Timer {
         new TimerSegment(`rgb(${61}, ${247}, ${24})`, 1), // green
     ];
 
-    id: string;
+    id: timerId_t;
     segments: TimerSegment[];
     title: string;
     time: TimerTime;
