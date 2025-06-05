@@ -3,40 +3,60 @@
     <head>
         <title> ✝ GTimer </title>
         <link rel="stylesheet" href="basic.css"/>
+        <link rel="stylesheet" href="main.css"/>
     </head>
     <body>
         <div id="main-page-div">
             <div id="top-bar">
-                <h1>GTimer</h1>
-                <div>
+                <div id="title">
+                    <h1>GTimer</h1>
+                </div>
+                <div id="status-div">
                     <label id="time-label"></label>
                     <label id="timezone-label"></label>
-                    <label id="connection-status-label"></label>
+                    <label id="connection-status-label">online</label>
                 </div>
             </div>
-            <div id="side-bar">
+            <aside id="side-bar">
                 <label>displayed:</label>
-            </div>
+                <div id="displayed-list">
+                </div>
+            </aside>
             <div id="timer-list">
             </div>
         </div>
-        <div id="edit-page-div">
+        <div id="edit-page-div" hidden="true">
         </div>
     </body>
 
-    <template>
-        <input type="text"/>
-        <label>
-            time: <input type="text" placeholder="h"/> : <input type="text" placeholder="mm"/> : <input type="text" placeholder="ss"/>
-        </label>
-        <div>
-            style: <label><input type="radio"/> horizontal</label>
-                   <label><input type="radio"/> vertical</label>
+    <template id="timer-template">
+        <div class="timer-wrapper">
+            <input type="text"/>
+            <label>
+                time: <input type="number" placeholder="h"/> : <input type="number" placeholder="mm"/> : <input type="number" placeholder="ss"/>
+            </label>
+            <div>
+                style: <label><input type="radio"/> horizontal</label>
+                    <label><input type="radio"/> vertical</label>
+            </div>
+            <div>
+                <button>discard</button>
+                <button>save</button>
+            </div>
         </div>
-        <div>
-            <button>discard</button>
-            <button>save</button>
-        </div>
+    </template>
+
+    <template id="displayed-not-running-template">
+        <label class="displayed-timer-name"></label>
+        <button class="displayed-hide-button">hide</button>
+        <button class="displayed-start-button">start</button>
+    </template>
+
+    <template id="displayed-running-template">
+        <label class="running-timer-name" style="color: red; font-weight:bold;"></label>
+        <label class="running-timer-time-left"></label>
+        <button class="running-pause-button">pause</button>
+        <button class="running-stop-button">stop</button>
     </template>
 
     <script type="text/javascript" src="main.js" defer="true"></script>
