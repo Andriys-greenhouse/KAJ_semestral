@@ -1,0 +1,44 @@
+#main-page-div {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+
+#top-bar {
+    flex: 1 0 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#status-div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#title {
+    flex-grow: 1;
+}
+
+#time-label {
+    flex: 1 0 100%;
+    align-self: flex-end;
+}
+#timezone-label, #connection-status-label {
+    flex: 1 0 auto;
+}
+
+#left-bar {
+    flex: 1 0 auto;
+}
+
+#timer-list {
+    flex: 4 0 auto;
+}
+
+#displayed-list {
+    margin: auto auto auto 20px;
+    display: flex;
+}
