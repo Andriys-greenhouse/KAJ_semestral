@@ -66,6 +66,7 @@ export function updateTimerList() {
         // ! use of the HTML `data attribute` !
         tileWrapper.dataset.timerId = tmr.id;
         tileWrapper.querySelector(".timer-tile-name").textContent = tmr.title;
+        (tileWrapper.querySelector(".timer-tile-delete-button") as HTMLButtonElement).addEventListener("click", onTimerTileDel);
         return tileWrapper;
     });
 
@@ -154,4 +155,13 @@ export function mainFrameUpdate() {
     });
     updateTimezoneLabel();
     updateTimeLabel();
+}
+
+/* controll element handles ------------------------------------------------- */
+export function onTimerTileDel(evnt: Event) {
+    //with the help of: https://stackoverflow.com/questions/29168719/can-you-target-an-elements-parent-element-using-event-target
+    const timerId = ((evnt.currentTarget as Element).closest("[data-timer-id]") as HTMLElement).dataset.timerId;
+    updateTimers(getTimersCpy().filter((tmr) => tmr.id != timerId));
+
+    onStorage();
 }
