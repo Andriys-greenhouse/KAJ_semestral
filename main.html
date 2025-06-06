@@ -29,8 +29,8 @@
         </div>
     </body>
 
-    <template id="timer-template">
-        <div class="timer-wrapper">
+    <template id="timer-edit-template">
+        <div class="timer-edit-wrapper">
             <input type="text"/>
             <label>
                 time: <input type="number" placeholder="h"/> : <input type="number" placeholder="mm"/> : <input type="number" placeholder="ss"/>
@@ -44,6 +44,19 @@
                 <button>save</button>
             </div>
         </div>
+    </template>
+
+    <template id="timer-tile-template">
+        <label class="timer-tile-label-wrapper"
+               data-timer-id="">
+        <!-- nesting of form elements into `label` is also a way of associating the two (https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) -->
+            <h3 class="timer-tile-name"></h3>
+            <input type="radio" name="timer-select-group" hidden="true"/>
+            <!-- following buttons hidden from CSS -->
+            <button class="timer-tile-display-button">display</button>
+            <button class="timer-tile-edit-button">edit</button>
+            <button class="timer-tile-delete-button">del</button>
+        </label>
     </template>
 
     <template id="displayed-not-running-template">

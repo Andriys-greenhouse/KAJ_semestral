@@ -1,3 +1,4 @@
+/* layout of the main components -------------------------------------------- */
 #main-page-div {
     display: flex;
     align-items: stretch;
@@ -41,4 +42,33 @@
 #displayed-list {
     margin: auto auto auto 20px;
     display: flex;
+}
+
+/* timer tile --------------------------------------------------------------- */
+.timer-tile-label-wrapper {
+    border-radius: 14px;
+    border-color: transparent;
+
+    display: flex;
+
+    & button {
+        visibility: hidden;
+    }
+
+    /* from: https://stackoverflow.com/questions/1014861/is-there-a-css-parent-selector */
+    &:has(> input:checked) {
+        border-color: var(--active-color);
+
+        button {
+            visibility: visible;
+        }
+    }
+
+    &:hover {
+        background-color: var(--hover-color);
+    }
+
+    .timer-tile-name {
+        flex-grow: 1;
+    }
 }

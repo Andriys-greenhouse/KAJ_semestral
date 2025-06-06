@@ -1,6 +1,8 @@
 body {
     --bg-color: #0f0f0f;
     --fg-color: floralwhite;
+    --active-color: blue;
+    --hover-color: gray;
 
     background-color: var(--bg-color);
     color: var(--fg-color);

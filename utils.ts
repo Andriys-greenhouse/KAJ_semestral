@@ -43,7 +43,7 @@ const mappingOfNamesLocalStorageOutline = {
 //          -- sets default values to all with `localStorageReset` field equal to `false` which were not present in the `localStorage`
 export function cleanupLocalStorage() {
     const desiredFields = Object.keys(localStorageOutline);
-    let desiredFound = [false, false, false];
+    const desiredFound = [false, false, false];
     const defaultVals = desiredFields.map((f) => localStorageOutline[f]);
 
     // with help of: https://duckduckgo.com/?q=js+generate+array+of+indexes+up+to+n&t=ffab&ia=web
@@ -70,10 +70,25 @@ export function getTimers(): Timer[] {
     return JSON.parse(localStorage.getItem(localStorageOutline[mappingOfNamesLocalStorageOutline.timers]));
 }
 
-export function getActive(): timerId_t[] {
+export function getShowing(): timerId_t[] {
     return JSON.parse(localStorage.getItem(localStorageOutline[mappingOfNamesLocalStorageOutline.showing]));
 }
 
 export function getRunning(): TimerRun[] {
     return JSON.parse(localStorage.getItem(localStorageOutline[mappingOfNamesLocalStorageOutline.running]));
+}
+
+export function updateTimerList() {
+    const tmrs = getTimers(); // copying is not needed
+    tmrs.sort((a, b) => a.title < b.title ? -1 : (a.title === b.title ? 0 : 1));
+
+    const tileElems = tmrs.map((tmr) => {
+        const tileWrapper = (document.querySelector("#timer-tile-template") as HTMLTemplateElement).content.cloneNode(true) as HTMLDivElement;
+        // ! use of the HTML `data attribute` !
+        tileWrapper.dataset.timerId = tmr.id;
+        tileWrapper.querySelector(".timer-tile-name").textContent = tmr.title;
+        return tileWrapper;
+    });
+
+    document.querySelector("#timer-list").replaceChildren(...tileElems);
 }
