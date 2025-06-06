@@ -1,22 +1,5 @@
-import { onOnline, onOffline, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals } from "./utils";
+import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals } from "./utils";
 import { getTimersCpy, setupLocalStorage, updateTimers } from "./lsManagement";
-
-function onStorage() {
-    updateTimerList();
-    updateDisplayedList();
-}
-
-let editModeOn = false;
-function editOn() {
-    editModeOn = true;
-    // TODO: make the rest of adjustments needed for putting the edit mode on
-}
-
-function editOff() {
-    editModeOn = false;
-    onStorage();
-    // TODO: make the rest of adjustments needed for putting the edit mode off
-}
 
 // find out whether online
 addEventListener("offline", onOffline);
@@ -26,7 +9,7 @@ addEventListener("online", onOnline);
 
 // load timers
 setupLocalStorage();
-updateTimerList();
+updateTimerList(); // calling `onStorage()` should also be possible
 
 // on storage
 window.addEventListener("storage", onStorage);

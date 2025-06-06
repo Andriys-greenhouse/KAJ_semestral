@@ -1,4 +1,4 @@
-import { getTimersCpy, getShowingCpy, getRunningCpy, getPausedCpy } from "./lsManagement";
+import { getTimersCpy, getShowingCpy, getRunningCpy, getPausedCpy, updateTimers } from "./lsManagement";
 import { timerId_t, Timer, TimerTime, TimerStyle } from "./objects";
 
 /* utility functions -------------------------------------------------------- */
@@ -39,6 +39,11 @@ export function onOffline(e: Event) {
         //TODO: consider parametrization of the color value
         lbl.style["color"] = "grey";
     }
+}
+
+export function onStorage() {
+    updateTimerList();
+    updateDisplayedList();
 }
 
 /* element update functions ------------------------------------------------- */
