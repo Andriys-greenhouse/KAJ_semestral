@@ -1,8 +1,12 @@
 body {
     --bg-color: #0f0f0f;
     --fg-color: floralwhite;
+
     --active-color: blue;
     --hover-color: gray;
+    --add-butto-color: green;
+
+    --border-radius: 5px;
 
     background-color: var(--bg-color);
     color: var(--fg-color);

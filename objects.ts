@@ -1,9 +1,11 @@
+import { getTimersCpy } from "./lsManagement";
+import { formatToIntPlaces } from "./utils";
+
 //following copyed from: https://stackoverflow.com/questions/42584228/how-can-i-define-a-type-for-a-css-color-in-typescript
 type RGB = `rgb(${number}, ${number}, ${number})`;
 type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 type HEX = `#${string}`;
 type Color = RGB | RGBA | HEX;
-
 
 export class TimerTime {
     seconds: number;
@@ -11,11 +13,12 @@ export class TimerTime {
         this.seconds = Math.floor(seconds); // we want an integer
     }
 
+    // ! NOTE: following methods/functions return *signed* results !
     getHours() { return Math.floor(this.seconds / (60 * 60)); }
-
     getMinutes() { return Math.floor((this.seconds % (60 * 60)) / 60); }
+    getSeconds() { return Math.floor(this.seconds % 60); }
 
-    getSeconds() { return Math }
+    getString() { return `${this.seconds < 0 ? "-" : ""}${formatToIntPlaces(Math.abs(this.getHours()), 2)}:${formatToIntPlaces(Math.abs(this.getMinutes()), 2)}:${formatToIntPlaces(Math.abs(this.getSeconds()), 2)}` }
 }
 
 export class TimerSegment {
@@ -29,12 +32,18 @@ export class TimerSegment {
 }
 
 export class TimerRun {
-    timer: Timer;
+    timerId: timerId_t;
     startPoint: Date;
 
-    constructor(timer: Timer) {
-        this.timer = timer;
+    constructor(timerId: timerId_t) {
+        this.timerId = timerId;
         this.startPoint = new Date(Date.now());
+    }
+
+    timeLeft() {
+        for (let tmr of getTimersCpy())
+            if (tmr.id === this.timerId)
+                return new TimerTime(tmr.time.seconds - (Date.now() - this.startPoint.getTime()));
     }
 }
 
@@ -57,7 +66,7 @@ export class Timer {
     title: string;
     time: TimerTime;
     style: TimerStyle;
-    constructor(title: string, time: TimerTime, style: TimerStyle, segments=Timer.defaultSegments) {
+    constructor(title: string, time: TimerTime, style: TimerStyle, segments: TimerSegment[]=Timer.defaultSegments) {
         this.id = self.crypto.randomUUID();
         this.title = title;
         this.time = time;
