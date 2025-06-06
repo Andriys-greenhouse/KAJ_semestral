@@ -1,4 +1,4 @@
-import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals } from "./utils";
+import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals, mainFrameUpdate } from "./utils";
 import { getTimersCpy, setupLocalStorage, updateTimers } from "./lsManagement";
 
 // find out whether online
@@ -26,10 +26,4 @@ document.querySelector("#add-timer-button").addEventListener("click", (e) => {
 //   -- for each of displayed call `updateDisplayed()`
 //   -- set timezone lable ( `updateTimezoneLabel()` )
 //   -- update displayed time ( `updateTimeLabel()` )
-window.requestAnimationFrame(() => {
-    document.querySelector("#displayed-list").childNodes.forEach((nd) => {
-        updateDisplayed(nd as HTMLLabelElement);
-    });
-    updateTimezoneLabel();
-    updateTimeLabel();
-})
+window.requestAnimationFrame(mainFrameUpdate);

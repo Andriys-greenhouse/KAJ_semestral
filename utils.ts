@@ -146,3 +146,12 @@ function styleDisplayedTimerElement(timerId: timerId_t, wraperElem: HTMLLabelEle
     visible.forEach((elem) => elem.style.setProperty("visibility", "visible"));
     hidden.forEach((elem) => elem.style.setProperty("visibility", "hidden"));
 }
+
+/* frame update functions --------------------------------------------------- */
+export function mainFrameUpdate() {
+    document.querySelector("#displayed-list").childNodes.forEach((nd) => {
+        updateDisplayed(nd as HTMLLabelElement);
+    });
+    updateTimezoneLabel();
+    updateTimeLabel();
+}
