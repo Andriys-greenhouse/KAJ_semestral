@@ -1,4 +1,4 @@
-/* layout of the main components -------------------------------------------- */
+/* main page components ----------------------------------------------------- */
 #main-page-div {
     display: flex;
     align-items: stretch;
@@ -44,9 +44,21 @@
     display: flex;
 }
 
+#add-timer-button {
+    --button-offset: 30px;
+
+    position: absolute;
+    bottom: var(--button-offset);
+    right: var(--button-offset);
+
+    background-color: var(--add-button-color);
+    border-radius: var(--border-radius);
+    z-index: 1;
+}
+
 /* timer tile --------------------------------------------------------------- */
 .timer-tile-label-wrapper {
-    border-radius: 14px;
+    border-radius: var(--border-radius);
     border-color: transparent;
 
     display: flex;

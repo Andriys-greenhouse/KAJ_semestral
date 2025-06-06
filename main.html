@@ -24,6 +24,7 @@
             </aside>
             <div id="timer-list">
             </div>
+            <button id="add-timer-button">+</button>
         </div>
         <div id="edit-page-div" hidden="true">
         </div>
@@ -59,18 +60,18 @@
         </label>
     </template>
 
-    <template id="displayed-not-running-template">
-        <label class="displayed-timer-name"></label>
-        <button class="displayed-hide-button">hide</button>
-        <button class="displayed-start-button">start</button>
+    <template id="displayed-template">
+        <label class="displayed-wrapper"
+               data-timer-id="">
+            <h3 class="displayed-timer-name"></h3>
+            <button class="displayed-hide-button">hide</button>
+            <button class="displayed-start-button">start</button>
+            <!-- shoul be hidded for not runnning -->
+            <label class="displayed-timer-time-left"></label>
+            <button class="displayed-pause-button">pause</button>
+            <button class="displayed-stop-button">stop</button>
+        </label>
     </template>
 
-    <template id="displayed-running-template">
-        <label class="running-timer-name" style="color: red; font-weight:bold;"></label>
-        <label class="running-timer-time-left"></label>
-        <button class="running-pause-button">pause</button>
-        <button class="running-stop-button">stop</button>
-    </template>
-
-    <script type="text/javascript" src="main.js" defer="true"></script>
+    <script type="module" src="main.js" defer="true"></script>
 </html>
