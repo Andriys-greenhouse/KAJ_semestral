@@ -1,5 +1,5 @@
 /* main page components ----------------------------------------------------- */
-#main-page-div {
+#main-page-wrapper {
     display: flex;
     align-items: stretch;
     flex-wrap: wrap;
