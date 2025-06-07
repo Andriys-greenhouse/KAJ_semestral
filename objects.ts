@@ -34,16 +34,29 @@ export class TimerSegment {
 export class TimerRun {
     timerId: timerId_t;
     startPoint: Date;
+    pausedAt: Date | null;
 
     constructor(timerId: timerId_t) {
         this.timerId = timerId;
         this.startPoint = new Date(Date.now());
+        this.pausedAt = null;
     }
 
     timeLeft() {
         for (let tmr of getTimersCpy())
             if (tmr.id === this.timerId)
                 return new TimerTime(tmr.time.seconds - (Date.now() - this.startPoint.getTime()));
+    }
+
+    pause() {
+        this.pausedAt || new Date(Date.now());
+    }
+
+    unpause() {
+        if (this.pausedAt) {
+            this.startPoint = new Date(this.startPoint.valueOf() + (Date.now() - this.pausedAt.valueOf()));
+            this.pausedAt = null;
+        }
     }
 }
 

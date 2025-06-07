@@ -1,4 +1,4 @@
-import { getTimersCpy, getShowingCpy, getRunningCpy, getPausedCpy, updateTimers, addToActiveWindows, clearActiveWindows, getActiveWindowsCpy, updateShowing, updateRunning } from "./lsManagement";
+import { getTimersCpy, getShowingCpy, getRunningCpy, updateTimers, addToActiveWindows, clearActiveWindows, getActiveWindowsCpy, updateShowing, updateRunning } from "./lsManagement";
 import { timerId_t, Timer, TimerTime, TimerStyle } from "./objects";
 
 /* utility functions -------------------------------------------------------- */

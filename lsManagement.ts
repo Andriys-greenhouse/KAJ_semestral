@@ -21,11 +21,6 @@ const LSOutline = {
         defaultVal: [], // TimerRun
         resetOnPageLoad: true
     } as LSOutlineItem,
-    paused: {
-        name: "paused",
-        defaultVal: [], // timerId_t
-        resetOnPageLoad: true
-    } as LSOutlineItem,
     activeWindows: {
         name: "activeWindows",
         defaultVal: [], // timerId_t
@@ -79,11 +74,6 @@ export function getRunningCpy(): TimerRun[] {
     return itm ? JSON.parse(itm) : [];
 }
 
-export function getPausedCpy(): timerId_t[] {
-    const itm = localStorage.getItem(LSOutline.paused.name);
-    return itm ? JSON.parse(itm) : [];
-}
-
 export function getActiveWindowsCpy(): timerId_t[] {
     const itm = localStorage.getItem(LSOutline.activeWindows.name);
     return itm ? JSON.parse(itm) : [];
@@ -102,12 +92,8 @@ export function updateRunning(rnng: TimerRun[]) {
     localStorage.setItem(LSOutline.running.name, JSON.stringify(rnng));
 }
 
-export function updatePaused(paused: timerId_t[]) {
-    localStorage.setItem(LSOutline.paused.name, JSON.stringify(paused));
-}
-
 export function addToActiveWindows(timerId: timerId_t) {
-    localStorage.setItem(LSOutline.paused.name, JSON.stringify(new Array(...getActiveWindowsCpy(), timerId)));
+    localStorage.setItem(LSOutline.activeWindows.name, JSON.stringify(new Array(...getActiveWindowsCpy(), timerId)));
 }
 
 export function clearActiveWindows() {
