@@ -234,3 +234,32 @@ function exitEdit() {
     (document.querySelector("#edit-page-wrapper") as HTMLDivElement).style.setProperty("visibility", "hidden");
     // TODO: make the rest of adjustments needed for putting the edit mode off
 }
+
+export function onLoad() {
+    const url = new URL(location.href);
+    const maybeId = url.searchParams.get("timerId");
+
+    if (!maybeId) {
+        exitEdit();
+    } else if (getTimersCpy().some((tmr) => tmr.id === maybeId)) {
+        enterEdit(maybeId);
+    } else {
+        url.searchParams.delete("timerId");
+        history.replaceState(null,"", url);
+        onLoad();
+    }
+}
+
+export function onSaveButtonClick(evnt: Event) {
+    const editPageW = (evnt.currentTarget as Element).closest("#edit-page-wrapper") as HTMLFormElement;
+    if (checkEditPage(editPageW)) {
+        const timers = getTimersCpy();
+        timers.push(extractTimerFromEditPage(editPageW));
+        updateTimers(timers);
+
+        const url = new URL(location.href);
+        url.searchParams.delete("timerId");
+        history.replaceState(null,"", url);
+        onLoad();
+    }
+}
