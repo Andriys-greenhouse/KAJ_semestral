@@ -6,6 +6,7 @@ body {
     --hover-color: gray;
     --add-butto-color: green;
     --displayed-higlight-color: red;
+    --form-font-color-on-invallid: red;
 
     --border-radius: 5px;
 

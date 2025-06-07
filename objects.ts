@@ -47,6 +47,7 @@ export class TimerRun {
     }
 }
 
+/* since this class should replace previous `enum` implemetaion of "TimerStyle" the static `instances` array shoud contain all existing instances (for possibility of comparisson) */
 export class TimerStyle {
     static instances: TimerStyle[] = [{textRepresentation: "horizontal"}, {textRepresentation: "vertical"}];
     textRepresentation: string;
@@ -64,7 +65,7 @@ export class Timer {
     id: timerId_t;
     segments: TimerSegment[];
     title: string;
-    time: TimerTime;
+    time: TimerTime; // NOTE: !!! zero seconds is a vallid `TimerTime` !!!
     style: TimerStyle;
     constructor(title: string, time: TimerTime, style: TimerStyle, segments: TimerSegment[]=Timer.defaultSegments) {
         this.id = self.crypto.randomUUID();

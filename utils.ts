@@ -21,6 +21,35 @@ export function getTimerWithDefVals() {
     return new Timer(`Timer ${num}`, new TimerTime(7*60), TimerStyle.instances.filter((ts) => ts.textRepresentation === "horizontal")[0]);
 }
 
+function extractTimerFromEditPage(editPageW: HTMLFormElement): Timer {
+    let ret = getTimerWithDefVals();
+
+    ret.id = editPageW.dataset.timerId;
+    ret.title = (editPageW.querySelector("#title-textfield") as HTMLInputElement).value;
+    ret.time = new TimerTime(Number((editPageW.querySelector("#hour-textfield") as HTMLInputElement).value) * 60 * 60 + Number((editPageW.querySelector("#minute-textfield") as HTMLInputElement).value) * 60 + Number((editPageW.querySelector("#second-textfield") as HTMLInputElement).value));
+
+    const textReprOfTimerStyle = (editPageW.querySelector("input[name=timer-type-group]:checked") as HTMLInputElement).dataset.timerType;
+    ret.style = TimerStyle.instances.filter((ins) => ins.textRepresentation === textReprOfTimerStyle)[0];
+
+    return ret;
+}
+
+// NOTE: this function also activates / deactivates error-indicating elements
+// NOTE: !!! zero seconds is a vallid `TimerTime` !!!
+function checkEditPage(editPageW: HTMLFormElement): boolean {
+    let ret = true;
+
+    const titleLabel = editPageW.querySelector("#title-label") as HTMLLabelElement
+    if (0 < (editPageW.querySelector("#title-textfield") as HTMLInputElement).value.length) {
+        ret = false;
+        titleLabel.style.color = getComputedStyle(titleLabel).getPropertyValue("--form-font-color-on-invallid");
+    } else {
+        titleLabel.style.color = getComputedStyle(titleLabel).getPropertyValue("--fg-color");
+    }
+
+    return ret;
+}
+
 /* evnt handlers ------------------------------------------------------------ */
 export function onOnline(e: Event) {
     //conversion from: https://stackoverflow.com/questions/58773652/ts2339-property-style-does-not-exist-on-type-element
