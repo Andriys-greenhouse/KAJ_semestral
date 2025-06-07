@@ -175,7 +175,8 @@ function enterEdit(timerId: timerId_t) {
     const editPageW = document.querySelector("#edit-page-wrapper") as HTMLFormElement;
     const timer = getTimersCpy().filter((tmr) => tmr.id === timerId)[0];
 
-    //TODO: set values in all inut elements on edit page from the `timer` instance
+    editPageW.dataset.timerId = timerId;
+    // set values in all inut elements on edit page from the `timer` instance
     (editPageW.querySelector("#title-textfield") as HTMLInputElement).value = timer.title;
 
     (editPageW.querySelector("#hour-textfield") as HTMLInputElement).value = timer.time.getHours().toString();
@@ -198,7 +199,7 @@ function exitEdit() {
     editing = false;
 
     onStorage();
-    mainFrameUpdate();
+    requestAnimationFrame(mainFrameUpdate);
 
     (document.querySelector("#main-page-wrapper") as HTMLDivElement).style.setProperty("visibility", "visible");
     (document.querySelector("#edit-page-wrapper") as HTMLDivElement).style.setProperty("visibility", "hidden");
