@@ -192,3 +192,15 @@ function enterEdit(timerId: timerId_t) {
     editPageW.style.setProperty("visibility", "visible");
     // TODO: make the rest of adjustments needed for putting the edit mode on
 }
+
+// NOTE: no saving of modified timer here (we expect it to be done already upon calling this function)
+function exitEdit() {
+    editing = false;
+
+    onStorage();
+    mainFrameUpdate();
+
+    (document.querySelector("#main-page-wrapper") as HTMLDivElement).style.setProperty("visibility", "visible");
+    (document.querySelector("#edit-page-wrapper") as HTMLDivElement).style.setProperty("visibility", "hidden");
+    // TODO: make the rest of adjustments needed for putting the edit mode off
+}
