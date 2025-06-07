@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="main.css"/>
     </head>
     <body>
-        <div id="main-page-div">
+        <div id="main-page-wrapper">
             <div id="top-bar">
                 <div id="title">
                     <h1>GTimer</h1>
@@ -26,26 +26,22 @@
             </div>
             <button id="add-timer-button">+</button>
         </div>
-        <div id="edit-page-div" hidden="true">
-        </div>
-    </body>
-
-    <template id="timer-edit-template">
-        <div class="timer-edit-wrapper">
-            <input type="text"/>
+        <div id="edit-page-wrapper" hidden="true">
+            <input id="title-textfield" type="text" />
             <label>
-                time: <input type="number" placeholder="h"/> : <input type="number" placeholder="mm"/> : <input type="number" placeholder="ss"/>
+                time: <input id="hour-textfield" type="number" placeholder="h"/> : <input id="minute-textfield" type="number" placeholder="mm"/> : <input id="second-textfield" type="number" placeholder="ss"/>
             </label>
             <div>
-                style: <label><input type="radio"/> horizontal</label>
-                    <label><input type="radio"/> vertical</label>
+                <!-- the content of `data-timer-type` attribute of the following `radio` inputs must(/should) be value returned by `getTimerStyleTextRepresentation()` function (see `objects.ts`) and each `radio` button should have a unique one (makes sense in the context of `radio` buttons or not :-) -->
+                style: <label><input type="radio" name="timer-type-group" data-timer-type="horizontal" value="checked"/> horizontal</label>
+                       <label><input type="radio" name="timer-type-group" data-timer-type="vertical"/> vertical</label>
             </div>
             <div>
                 <button>discard</button>
                 <button>save</button>
             </div>
         </div>
-    </template>
+    </body>
 
     <template id="timer-tile-template">
         <label class="timer-tile-label-wrapper"

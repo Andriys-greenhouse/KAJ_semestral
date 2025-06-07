@@ -1,5 +1,5 @@
 import { getTimersCpy, getShowingCpy, getRunningCpy, getPausedCpy, updateTimers } from "./lsManagement";
-import { timerId_t, Timer, TimerTime, TimerStyle } from "./objects";
+import { timerId_t, Timer, TimerTime, TimerStyle, getTimerStyleTextRepresentation } from "./objects";
 
 /* utility functions -------------------------------------------------------- */
 export function formatToIntPlaces(num: number, places: number) {
@@ -155,6 +155,8 @@ export function mainFrameUpdate() {
     });
     updateTimezoneLabel();
     updateTimeLabel();
+
+    !editing && requestAnimationFrame(mainFrameUpdate);
 }
 
 /* controll element handles ------------------------------------------------- */
@@ -164,4 +166,29 @@ export function onTimerTileDel(evnt: Event) {
     updateTimers(getTimersCpy().filter((tmr) => tmr.id != timerId));
 
     onStorage();
+}
+
+let editing = false;
+function enterEdit(timerId: timerId_t) {
+    editing = true;
+
+    const editPageW = document.querySelector("#edit-page-wrapper") as HTMLDivElement;
+    const timer = getTimersCpy().filter((tmr) => tmr.id === timerId)[0];
+
+    //TODO: set values in all inut elements on edit page from the `timer` instance
+    (editPageW.querySelector("#title-textfield") as HTMLInputElement).value = timer.title;
+
+    (editPageW.querySelector("#hour-textfield") as HTMLInputElement).value = timer.time.getHours().toString();
+    (editPageW.querySelector("#minute-textfield") as HTMLInputElement).value = timer.time.getMinutes().toString();
+    (editPageW.querySelector("#second-textfield") as HTMLInputElement).value = timer.time.getSeconds().toString();
+
+    editPageW.querySelectorAll("input[type=radio]").forEach((elem) => {
+        const ie = (elem as HTMLInputElement);
+        if (ie.dataset.timerType === getTimerStyleTextRepresentation(timer.style))
+            ie.checked = true; //NOTE: we might just as well `break` here
+    });
+
+    (document.querySelector("#main-page-wrapper") as HTMLDivElement).style.setProperty("visibility", "hidden");
+    editPageW.style.setProperty("visibility", "visible");
+    // TODO: make the rest of adjustments needed for putting the edit mode on
 }
