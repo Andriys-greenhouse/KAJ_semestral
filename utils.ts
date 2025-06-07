@@ -114,6 +114,7 @@ export function updateDisplayedList() {
         dspWrapper.dataset.timerId = tmr.id;
         dspWrapper.querySelector(".displayed-timer-name").textContent = tmr.title;
         updateDisplayed(dspWrapper);
+        (dspWrapper.querySelector(".timer-tile-edit-button") as HTMLButtonElement).closest("a").href = `/timer.html?timerId=${tmr.id}`;
         return dspWrapper;
     });
 
