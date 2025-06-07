@@ -75,6 +75,11 @@ export function onStorage() {
     updateDisplayedList();
 }
 
+export function checkTimerState() {
+    const timerId = (new URL(location.href)).searchParams.get("timerId"); // we count on that this is not `null`
+    !getShowingCpy().some((sId) => sId === timerId) && window.close(); // if window is supposed to be closed
+}
+
 /* element update functions ------------------------------------------------- */
 export function updateTimezoneLabel() {
     const timezoneNum = Math.floor(-1 * new Date(Date.now()).getTimezoneOffset() / 60);

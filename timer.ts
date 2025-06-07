@@ -1,6 +1,6 @@
 import { getShowingCpy, getTimersCpy, updateShowing } from "./lsManagement"
 import { timerId_t } from "./objects";
-import { showActivity } from "./utils";
+import { checkTimerState, showActivity } from "./utils";
 
 const timerId = (new URL(location.href)).searchParams.get("timerId");
 
@@ -10,3 +10,5 @@ if (!timerId || !getTimersCpy().some((tmr) => tmr.id === timerId))
 updateShowing(new Array(...getShowingCpy(), timerId as timerId_t));
 
 showActivity(timerId as timerId_t); // will run until the window / tab is closed
+
+window.addEventListener("storage", checkTimerState);
