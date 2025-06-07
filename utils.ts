@@ -172,7 +172,7 @@ let editing = false;
 function enterEdit(timerId: timerId_t) {
     editing = true;
 
-    const editPageW = document.querySelector("#edit-page-wrapper") as HTMLDivElement;
+    const editPageW = document.querySelector("#edit-page-wrapper") as HTMLFormElement;
     const timer = getTimersCpy().filter((tmr) => tmr.id === timerId)[0];
 
     //TODO: set values in all inut elements on edit page from the `timer` instance
