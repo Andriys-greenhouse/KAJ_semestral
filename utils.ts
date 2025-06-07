@@ -244,9 +244,7 @@ export function onLoad() {
     } else if (getTimersCpy().some((tmr) => tmr.id === maybeId)) {
         enterEdit(maybeId);
     } else {
-        url.searchParams.delete("timerId");
-        history.replaceState(null,"", url);
-        onLoad();
+        softPopHistoryState();
     }
 }
 
@@ -257,9 +255,16 @@ export function onSaveButtonClick(evnt: Event) {
         timers.push(extractTimerFromEditPage(editPageW));
         updateTimers(timers);
 
-        const url = new URL(location.href);
-        url.searchParams.delete("timerId");
-        history.replaceState(null,"", url);
-        onLoad();
+        softPopHistoryState();
     }
+}
+
+/** Function supplementing `pop` of `history`.
+ *  (It is possible, that user have loaded this page using URL and that the edit page is the first one loaded -- then `pop`ing from the `history` would not be possible. This function solves this problem.)
+ */
+export function softPopHistoryState() {
+    const url = new URL(location.href);
+    url.searchParams.delete("timerId");
+    history.replaceState(null,"", url);
+    onLoad();
 }

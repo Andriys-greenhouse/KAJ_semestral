@@ -1,4 +1,4 @@
-import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals, mainFrameUpdate, onLoad } from "./utils";
+import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick } from "./utils";
 import { getTimersCpy, setupLocalStorage, updateTimers } from "./lsManagement";
 
 // find out whether online
@@ -31,3 +31,7 @@ window.requestAnimationFrame(mainFrameUpdate);
 // handle history
 window.addEventListener("popstate", onLoad);
 onLoad();
+
+// add edit page/form controlls
+(document.querySelector("#discard-button") as HTMLButtonElement).addEventListener("click", softPopHistoryState);
+(document.querySelector("#save-button") as HTMLButtonElement).addEventListener("click", onSaveButtonClick);
