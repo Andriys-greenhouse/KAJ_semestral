@@ -1,4 +1,4 @@
-import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick } from "./utils";
+import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick, pollActiveWindows } from "./utils";
 import { getTimersCpy, setupLocalStorage, updateTimers } from "./lsManagement";
 
 // find out whether online
@@ -35,3 +35,5 @@ onLoad();
 // add edit page/form controlls
 (document.querySelector("#discard-button") as HTMLButtonElement).addEventListener("click", softPopHistoryState);
 (document.querySelector("#save-button") as HTMLButtonElement).addEventListener("click", onSaveButtonClick);
+
+pollActiveWindows(); // will run until the window / tab is closed

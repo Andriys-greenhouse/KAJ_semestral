@@ -25,7 +25,12 @@ const LSOutline = {
         name: "paused",
         defaultVal: [], // timerId_t
         resetOnPageLoad: true
-    } as LSOutlineItem
+    } as LSOutlineItem,
+    activeWindows: {
+        name: "activeWindows",
+        defaultVal: [], // timerId_t
+        resetOnPageLoad: true
+    } as LSOutlineItem,
 }
 
 /** A function that
@@ -60,22 +65,27 @@ export function setupLocalStorage() {
 
 /* get ---------------------------------------------------------------------- */
 export function getTimersCpy(): Timer[] {
-    const itm = localStorage.getItem(LSOutline[LSOutline.timers.name]);
+    const itm = localStorage.getItem(LSOutline.timers.name);
     return itm ? JSON.parse(itm) : [];
 }
 
 export function getShowingCpy(): timerId_t[] {
-    const itm = localStorage.getItem(LSOutline[LSOutline.showing.name]);
+    const itm = localStorage.getItem(LSOutline.showing.name);
     return itm ? JSON.parse(itm) : [];
 }
 
 export function getRunningCpy(): TimerRun[] {
-    const itm = localStorage.getItem(LSOutline[LSOutline.running.name]);
+    const itm = localStorage.getItem(LSOutline.running.name);
     return itm ? JSON.parse(itm) : [];
 }
 
 export function getPausedCpy(): timerId_t[] {
-    const itm = localStorage.getItem(LSOutline[LSOutline.paused.name]);
+    const itm = localStorage.getItem(LSOutline.paused.name);
+    return itm ? JSON.parse(itm) : [];
+}
+
+export function getActiveWindowsCpy(): timerId_t[] {
+    const itm = localStorage.getItem(LSOutline.activeWindows.name);
     return itm ? JSON.parse(itm) : [];
 }
 
@@ -94,4 +104,12 @@ export function updateRunning(rnng: TimerRun[]) {
 
 export function updatePaused(paused: timerId_t[]) {
     localStorage.setItem(LSOutline.paused.name, JSON.stringify(paused));
+}
+
+export function addToActiveWindows(timerId: timerId_t) {
+    localStorage.setItem(LSOutline.paused.name, JSON.stringify(new Array(...getActiveWindowsCpy(), timerId)));
+}
+
+export function clearActiveWindows() {
+    localStorage.setItem(LSOutline.activeWindows.name, JSON.stringify(LSOutline.activeWindows.defaultVal));
 }

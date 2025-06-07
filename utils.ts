@@ -1,4 +1,4 @@
-import { getTimersCpy, getShowingCpy, getRunningCpy, getPausedCpy, updateTimers } from "./lsManagement";
+import { getTimersCpy, getShowingCpy, getRunningCpy, getPausedCpy, updateTimers, addToActiveWindows, clearActiveWindows, getActiveWindowsCpy, updateShowing, updateRunning } from "./lsManagement";
 import { timerId_t, Timer, TimerTime, TimerStyle } from "./objects";
 
 /* utility functions -------------------------------------------------------- */
@@ -269,3 +269,22 @@ export function softPopHistoryState() {
     history.replaceState(null,"", url);
     onLoad();
 }
+
+/* periodical update functions ---------------------------------------------- */
+// polling mechanism for detection of closed windows / tabs introduced due to lack of availibility of `beforeunload` window event on the Safari browser. (With help of: https://stackoverflow.com/questions/13443503/run-javascript-code-on-window-close-or-page-refresh#13443562 .)
+const hearbeatPeriod = 500; // in miliseconds
+export function pollActiveWindows() {
+    const aW = getActiveWindowsCpy();
+    updateShowing(getShowingCpy().filter((sTId) => aW.some((aWTId) => sTId === aWTId)));
+    updateRunning(getRunningCpy().filter((tR) => aW.some((aWTId) => tR.timerId === aWTId)));
+    onStorage();
+
+    clearActiveWindows();
+    setTimeout(pollActiveWindows, hearbeatPeriod * 2);
+}
+
+export function showActivity(timerId: timerId_t) {
+    addToActiveWindows(timerId);
+    setTimeout(showActivity, hearbeatPeriod);
+}
+
