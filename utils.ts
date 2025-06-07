@@ -1,5 +1,5 @@
 import { getTimersCpy, getShowingCpy, getRunningCpy, getPausedCpy, updateTimers } from "./lsManagement";
-import { timerId_t, Timer, TimerTime, TimerStyle, getTimerStyleTextRepresentation } from "./objects";
+import { timerId_t, Timer, TimerTime, TimerStyle } from "./objects";
 
 /* utility functions -------------------------------------------------------- */
 export function formatToIntPlaces(num: number, places: number) {
@@ -18,7 +18,7 @@ export function getTimerWithDefVals() {
     while (tmrTitles.some((tmrT) => tmrT === `Timer ${num}`))
         ++num;
 
-    return new Timer(`Timer ${num}`, new TimerTime(7*60), TimerStyle.Horizontal);
+    return new Timer(`Timer ${num}`, new TimerTime(7*60), TimerStyle.instances.filter((ts) => ts.textRepresentation === "horizontal")[0]);
 }
 
 /* evnt handlers ------------------------------------------------------------ */
@@ -185,7 +185,7 @@ function enterEdit(timerId: timerId_t) {
 
     editPageW.querySelectorAll("input[type=radio]").forEach((elem) => {
         const ie = (elem as HTMLInputElement);
-        if (ie.dataset.timerType === getTimerStyleTextRepresentation(timer.style))
+        if (ie.dataset.timerType === timer.style.textRepresentation)
             ie.checked = true; //NOTE: we might just as well `break` here
     });
 

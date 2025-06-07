@@ -47,23 +47,9 @@ export class TimerRun {
     }
 }
 
-export enum TimerStyle {
-    Vertical,
-    Horizontal
-}
-export function getTimerStyleTextRepresentation(ts: TimerStyle) {
-    let ret = "";
-    switch (ts) {
-        case TimerStyle.Vertical:
-            ret = "vertical";
-            break;
-        case TimerStyle.Horizontal:
-            ret = "horizontal";
-            break;
-        default:
-            throw new Error(`Text reprezentation for value ${ts} of the \`TimerStyle\` enum is not defined.`);
-    }
-    return ret;
+export class TimerStyle {
+    static instances: TimerStyle[] = [{textRepresentation: "horizontal"}, {textRepresentation: "vertical"}];
+    textRepresentation: string;
 }
 
 export type timerId_t = string;
