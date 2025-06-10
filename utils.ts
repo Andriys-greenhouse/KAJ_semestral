@@ -1,5 +1,5 @@
 import { getTimersCpy, getShowingCpy, getRunningCpy, updateTimers, addToActiveWindows, clearActiveWindows, getActiveWindowsCpy, updateShowing, updateRunning } from "./lsManagement";
-import { timerId_t, Timer, TimerTime, TimerStyle } from "./objects";
+import { timerId_t, Timer, TimerTime, TimerStyle, HorizontalTimer, VerticalTimer } from "./objects";
 
 /* utility functions -------------------------------------------------------- */
 export function formatToIntPlaces(num: number, places: number) {
@@ -10,7 +10,7 @@ export function formatToIntPlaces(num: number, places: number) {
     return ret;
 }
 
-export function getTimerWithDefVals() {
+export function getTimerWithDefVals(ts: TimerStyle) {
     const tmrTitles= getTimersCpy().map((tmr) => tmr.title);
 
     // pick title
@@ -18,18 +18,32 @@ export function getTimerWithDefVals() {
     while (tmrTitles.some((tmrT) => tmrT === `Timer ${num}`))
         ++num;
 
-    return new Timer(`Timer ${num}`, new TimerTime(7*60), TimerStyle.instances.filter((ts) => ts.textRepresentation === "horizontal")[0]);
+    const constructorArgs: [string, TimerTime] = [`Timer ${num}`, new TimerTime(7*60)];
+
+    let ret = undefined;
+    switch (ts) {
+        case TimerStyle.horizontal:
+            ret = new HorizontalTimer(...constructorArgs);
+            break;
+        case TimerStyle.vertical:
+            ret = new VerticalTimer(...constructorArgs);
+            break;
+        default:
+            throw new Error(`Unknown \`TimerStyle\` text representation ("${TimerStyle[ts]}") passed as argument.`);
+    }
+
+    return ret;
 }
 
 function extractTimerFromEditPage(editPageW: HTMLFormElement): Timer {
-    let ret = getTimerWithDefVals();
+    const textReprOfTimerStyle = (editPageW.querySelector("input[name=timer-type-group]:checked") as HTMLInputElement).dataset.timerType;
+    //const timerStyle = TimerStyle.instances.filter((ins) => ins.textRepresentation === textReprOfTimerStyle)[0];
+
+    let ret = getTimerWithDefVals(textReprOfTimerStyle as TimerStyle);
 
     ret.id = editPageW.dataset.timerId;
     ret.title = (editPageW.querySelector("#title-textfield") as HTMLInputElement).value;
     ret.time = new TimerTime(Number((editPageW.querySelector("#hour-textfield") as HTMLInputElement).value) * 60 * 60 + Number((editPageW.querySelector("#minute-textfield") as HTMLInputElement).value) * 60 + Number((editPageW.querySelector("#second-textfield") as HTMLInputElement).value));
-
-    const textReprOfTimerStyle = (editPageW.querySelector("input[name=timer-type-group]:checked") as HTMLInputElement).dataset.timerType;
-    ret.style = TimerStyle.instances.filter((ins) => ins.textRepresentation === textReprOfTimerStyle)[0];
 
     return ret;
 }
@@ -220,7 +234,7 @@ function enterEdit(timerId: timerId_t) {
 
     editPageW.querySelectorAll("input[type=radio]").forEach((elem) => {
         const ie = (elem as HTMLInputElement);
-        if (ie.dataset.timerType === timer.style.textRepresentation)
+        if (ie.dataset.timerType === TimerStyle[timer.getStyle()])
             ie.checked = true; //NOTE: we might just as well `break` here
     });
 

@@ -60,10 +60,8 @@ export class TimerRun {
     }
 }
 
-/* since this class should replace previous `enum` implemetaion of "TimerStyle" the static `instances` array shoud contain all existing instances (for possibility of comparisson) */
-export class TimerStyle {
-    static instances: TimerStyle[] = [{textRepresentation: "horizontal"}, {textRepresentation: "vertical"}];
-    textRepresentation: string;
+export enum TimerStyle {
+    horizontal = "horizontal", vertical = "vertical"
 }
 
 export type timerId_t = string;
@@ -74,17 +72,16 @@ export class Timer {
         new TimerSegment(`rgb(${247}, ${236}, ${24})`, 0.20), // yellow
         new TimerSegment(`rgb(${61}, ${247}, ${24})`, 1), // green
     ];
+    getStyle() { return undefined; }
 
     id: timerId_t;
     segments: TimerSegment[];
     title: string;
     time: TimerTime; // NOTE: !!! zero seconds is a vallid `TimerTime` !!!
-    style: TimerStyle;
-    constructor(title: string, time: TimerTime, style: TimerStyle, segments: TimerSegment[]=Timer.defaultSegments) {
+    constructor(title: string, time: TimerTime, segments: TimerSegment[]=Timer.defaultSegments) {
         this.id = self.crypto.randomUUID();
         this.title = title;
         this.time = time;
-        this.style = style;
         this.segments = segments;
     }
 
@@ -92,12 +89,16 @@ export class Timer {
 }
 
 export class VerticalTimer extends Timer {
+    getStyle() { return TimerStyle.vertical; }
+
     fillSVG(se: SVGElement) {
         //TODO: write visualization method
     }
 }
 
 export class HorizontalTimer extends Timer {
+    getStyle() { return TimerStyle.horizontal; }
+
     fillSVG(se: SVGElement) {
         //TODO: write visualization method
     }

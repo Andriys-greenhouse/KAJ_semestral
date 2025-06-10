@@ -1,5 +1,6 @@
 import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick, pollActiveWindows } from "./utils";
 import { getTimersCpy, setupLocalStorage, updateTimers } from "./lsManagement";
+import { TimerStyle } from "./objects";
 
 // find out whether online
 addEventListener("offline", onOffline);
@@ -17,7 +18,7 @@ window.addEventListener("storage", onStorage);
 // add-button
 document.querySelector("#add-timer-button").addEventListener("click", (e) => {
     const timers = getTimersCpy();
-    timers.push(getTimerWithDefVals());
+    timers.push(getTimerWithDefVals(TimerStyle.horizontal));
     updateTimers(timers);
     onStorage();
 });
