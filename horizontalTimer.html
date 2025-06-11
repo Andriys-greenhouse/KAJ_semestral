@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>horizontalTimer test implementation</title>
+        <link rel="stylesheet" href="horizontalTimer.css"/>
+    </head>
+    <body>
+        <svg viewport="0 0 100 100" width="100%" heiht="100%">
+            <mask id="segmentMask" mask-type="luminance">
+                <rect fill="black" width="100" height="100"/>
+                <rect id="maskRect" fill="white" class="segmentLike" style="width: 20%;"/>
+            </mask>
+            <g id="timerGroup">
+                <rect id="backFrameRect"/>
+                <rect id="backRect" class="segmentLike"/>
+                <g id="segmentsGroup" mask="url(#segmentMask)">
+                    <rect fill="green" class="segmentLike"/>
+                    <rect fill="yellow" class="segmentLike"/>
+                    <rect fill="red" class="segmentLike" style="width: 20%"/>
+                </g>
+                <rect id="bottomPannel"/>
+                <text id="timerText">00:07:00</text>
+            </g>
+        </svg>
+    </body>
+</html>
