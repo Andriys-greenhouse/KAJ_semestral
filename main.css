@@ -22,6 +22,7 @@
 #title {
     flex-grow: 1;
     display: flex;
+    /* with help of: https://www.vzhurudolu.cz/prirucka/css-flexbox */
     align-items: center;
 }
 
