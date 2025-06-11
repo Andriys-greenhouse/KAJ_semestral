@@ -4,11 +4,26 @@
         <title> ✝ GTimer </title>
         <link rel="stylesheet" href="basic.css"/>
         <link rel="stylesheet" href="main.css"/>
+        <link rel="stylesheet" href="cross.css"/>
     </head>
     <body>
         <div id="main-page-wrapper">
             <div id="top-bar">
                 <div id="title">
+                    <svg id="crossAnimSVG" viewport="0 0 100 100" width="100" height="100">
+                        <g class="crossFgColored crossBeam">
+                            <rect class="crossVerticalTrunk"/>
+                            <rect class="crossHorizontalTrunk"/>
+                        </g>
+                        <g class="crossBgColored crossBeamEraser">
+                            <rect class="crossVerticalTrunk"/>
+                            <rect class="crossHorizontalTrunk"/>
+                        </g>
+                        <g class="crossFgColored">
+                            <rect class="crossVerticalTrunk"/>
+                            <rect class="crossHorizontalTrunk"/>
+                        </g>
+                    </svg>
                     <h1>GTimer</h1>
                 </div>
                 <div id="status-div">
