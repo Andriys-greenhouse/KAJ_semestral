@@ -114,7 +114,11 @@ export function updateTimerList() {
         // ! use of the HTML `data attribute` !
         tileWrapper.dataset.timerId = tmr.id;
         tileWrapper.querySelector(".timer-tile-name").textContent = tmr.title;
-        (tileWrapper.querySelector(".timer-tile-edit-button") as HTMLButtonElement).closest("a").href = `/timer.html?timerId=${tmr.id}`;
+        (tileWrapper.querySelector(".timer-tile-display-button") as HTMLButtonElement).closest("a").href = `/timer.html?timerId=${tmr.id}`;
+        (tileWrapper.querySelector(".timer-tile-edit-button") as HTMLButtonElement).addEventListener("click", (evnt) => {
+            const timerId = ((evnt.currentTarget as Element).closest("[data-timer-id]") as HTMLElement).dataset.timerId;
+            enterEdit(timerId);
+        });
         (tileWrapper.querySelector(".timer-tile-delete-button") as HTMLButtonElement).addEventListener("click", onTimerTileDel);
         return tileWrapper;
     });
