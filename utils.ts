@@ -137,6 +137,10 @@ export function updateDisplayedList() {
         // ! use of the HTML `data attribute` !
         dspWrapper.dataset.timerId = tmr.id;
         dspWrapper.querySelector(".displayed-timer-name").textContent = tmr.title;
+        (dspWrapper.querySelector(".displayed-hide-button") as HTMLButtonElement).addEventListener("click", (evnt) => {
+            const timerId = ((evnt.currentTarget as Element).closest("[data-timer-id]") as HTMLElement).dataset.timerId;
+            updateShowing(getShowingCpy().filter((sId) => sId !== timerId));
+        });
         updateDisplayed(dspWrapper);
         return dspWrapper;
     });
