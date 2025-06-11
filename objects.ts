@@ -38,7 +38,7 @@ export class TimerRun {
 
     constructor(timerId: timerId_t) {
         this.timerId = timerId;
-        this.startPoint = new Date(Date.now());
+        this.startPoint = new Date(Date.now()); // does not need to indicate time of start of the `Timer` instance (see the `unpause()` method of this class)
         this.pausedAt = null;
     }
 
@@ -48,8 +48,20 @@ export class TimerRun {
                 return new TimerTime(tmr.time.seconds - (Date.now() - this.startPoint.getTime()));
     }
 
+    togglePause() {
+        if (this.pausedAt) {
+            this.unpause();
+        } else {
+            this.pause();
+        }
+    }
+
+    isPaused() {
+        return this.pausedAt != null;
+    }
+
     pause() {
-        this.pausedAt || new Date(Date.now());
+        this.pausedAt || (this.pausedAt = new Date(Date.now()));
     }
 
     unpause() {

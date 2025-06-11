@@ -1,5 +1,5 @@
 import { getTimersCpy, getShowingCpy, getRunningCpy, updateTimers, addToActiveWindows, clearActiveWindows, getActiveWindowsCpy, updateShowing, updateRunning } from "./lsManagement";
-import { timerId_t, Timer, TimerTime, TimerStyle, HorizontalTimer, VerticalTimer, TimerChild } from "./objects";
+import { timerId_t, Timer, TimerTime, TimerStyle, HorizontalTimer, VerticalTimer, TimerChild, TimerRun } from "./objects";
 
 /* utility functions -------------------------------------------------------- */
 export function formatToIntPlaces(num: number, places: number) {
@@ -140,6 +140,22 @@ export function updateDisplayedList() {
         (dspWrapper.querySelector(".displayed-hide-button") as HTMLButtonElement).addEventListener("click", (evnt) => {
             const timerId = ((evnt.currentTarget as Element).closest("[data-timer-id]") as HTMLElement).dataset.timerId;
             updateShowing(getShowingCpy().filter((sId) => sId !== timerId));
+        });
+        (dspWrapper.querySelector(".displayed-start-button") as HTMLButtonElement).addEventListener("click", (evnt) => {
+            const timerId = ((evnt.currentTarget as Element).closest("[data-timer-id]") as HTMLElement).dataset.timerId;
+            updateRunning(new Array(...getRunningCpy(), new TimerRun(timerId))); // checking whether timer is not running already shouldn't be needed since "start" button should be hidden on the displayed timer `label` if the time is running
+        });
+        (dspWrapper.querySelector(".displayed-pause-button") as HTMLButtonElement).addEventListener("click", (evnt) => {
+            const button = (evnt.currentTarget as HTMLButtonElement);
+            const timerId = (button.closest("[data-timer-id]") as HTMLElement).dataset.timerId;
+            const running = getRunningCpy();
+            running.filter((tR) => tR.timerId === timerId)[0].togglePause();
+            button.textContent = running.filter((tR) => tR.timerId === timerId)[0].isPaused() ? "resume" : "pause";
+            updateRunning(running);
+        });
+        (dspWrapper.querySelector(".displayed-stop-button") as HTMLButtonElement).addEventListener("click", (evnt) => {
+            const timerId = ((evnt.currentTarget as Element).closest("[data-timer-id]") as HTMLElement).dataset.timerId;
+            updateRunning(getRunningCpy().filter((tR) => tR.timerId !== timerId));
         });
         updateDisplayed(dspWrapper);
         return dspWrapper;
