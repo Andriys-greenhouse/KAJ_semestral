@@ -1,4 +1,4 @@
-import { Timer, timerId_t, TimerRun } from "./objects"
+import { HorizontalTimer, Timer, timerId_t, TimerRun, VerticalTimer, getAsInstanceOfChildClass, TimerStyle } from "./objects"
 
 class LSOutlineItem {
     name: string;
@@ -8,7 +8,7 @@ class LSOutlineItem {
 const LSOutline = {
     timers: {
         name: "timers",
-        defaultVal: [], // Timer
+        defaultVal: [], // [TimerStyle, Timer]
         resetOnPageLoad: false
     } as LSOutlineItem,
     showing: {
@@ -59,9 +59,9 @@ export function setupLocalStorage() {
 }
 
 /* get ---------------------------------------------------------------------- */
-export function getTimersCpy(): Timer[] {
+export function getTimersCpy(): (HorizontalTimer | VerticalTimer)[] {
     const itm = localStorage.getItem(LSOutline.timers.name);
-    return itm ? JSON.parse(itm) : [];
+    return itm ? JSON.parse(itm).map((tuple: [TimerStyle, Timer]) => getAsInstanceOfChildClass(...tuple)) : [];
 }
 
 export function getShowingCpy(): timerId_t[] {
@@ -81,7 +81,7 @@ export function getActiveWindowsCpy(): timerId_t[] {
 
 /* update / save ------------------------------------------------------------ */
 export function updateTimers(tmrs: Timer[]) {
-    localStorage.setItem(LSOutline.timers.name, JSON.stringify(tmrs));
+    localStorage.setItem(LSOutline.timers.name, JSON.stringify(tmrs.map((tmr) => [tmr.getStyle(), tmr])));
 }
 
 export function updateShowing(shwn: timerId_t[]) {

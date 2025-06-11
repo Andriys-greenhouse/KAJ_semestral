@@ -64,6 +64,25 @@ export enum TimerStyle {
     horizontal = "horizontal", vertical = "vertical"
 }
 
+/** Function for transformation of (deserialized) `Timer` class instance into instance of class inheriting from it. */
+export function getAsInstanceOfChildClass(ts: TimerStyle, tmr: Timer): HorizontalTimer | VerticalTimer {
+    let ret = undefined;
+    switch (ts) {
+        case TimerStyle.horizontal:
+            ret = new HorizontalTimer(tmr.title, tmr.time, tmr.segments);
+            ret.id = tmr.id;
+            break;
+        case TimerStyle.vertical:
+            ret = new VerticalTimer(tmr.title, tmr.time, tmr.segments);
+            ret.id = tmr.id;
+            break;
+        default:
+            throw new Error(`Unknown \`TimerStyle\` text representation ("${TimerStyle[ts]}") passed as argument.`);
+    }
+
+    return ret;
+}
+
 export type timerId_t = string;
 
 export class Timer {
