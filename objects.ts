@@ -65,7 +65,7 @@ export enum TimerStyle {
 }
 
 /** Function for transformation of (deserialized) `Timer` class instance into instance of class inheriting from it. */
-export function getAsInstanceOfChildClass(ts: TimerStyle, tmr: Timer): HorizontalTimer | VerticalTimer {
+export function getAsInstanceOfChildClass(ts: TimerStyle, tmr: Timer): TimerChild {
     let ret = undefined;
     switch (ts) {
         case TimerStyle.horizontal:
@@ -106,6 +106,8 @@ export class Timer {
 
     // define `fillSVG(svgElem)` in all children
 }
+
+export type TimerChild = HorizontalTimer | VerticalTimer;
 
 export class VerticalTimer extends Timer {
     getStyle() { return TimerStyle.vertical; }

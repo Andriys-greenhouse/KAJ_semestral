@@ -1,4 +1,4 @@
-import { HorizontalTimer, Timer, timerId_t, TimerRun, VerticalTimer, getAsInstanceOfChildClass, TimerStyle } from "./objects"
+import { HorizontalTimer, Timer, timerId_t, TimerRun, VerticalTimer, getAsInstanceOfChildClass, TimerStyle, TimerChild } from "./objects"
 
 class LSOutlineItem {
     name: string;
@@ -59,7 +59,7 @@ export function setupLocalStorage() {
 }
 
 /* get ---------------------------------------------------------------------- */
-export function getTimersCpy(): (HorizontalTimer | VerticalTimer)[] {
+export function getTimersCpy(): TimerChild[] {
     const itm = localStorage.getItem(LSOutline.timers.name);
     return itm ? JSON.parse(itm).map((tuple: [TimerStyle, Timer]) => getAsInstanceOfChildClass(...tuple)) : [];
 }

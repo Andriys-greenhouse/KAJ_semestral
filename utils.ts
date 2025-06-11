@@ -1,5 +1,5 @@
 import { getTimersCpy, getShowingCpy, getRunningCpy, updateTimers, addToActiveWindows, clearActiveWindows, getActiveWindowsCpy, updateShowing, updateRunning } from "./lsManagement";
-import { timerId_t, Timer, TimerTime, TimerStyle, HorizontalTimer, VerticalTimer } from "./objects";
+import { timerId_t, Timer, TimerTime, TimerStyle, HorizontalTimer, VerticalTimer, TimerChild } from "./objects";
 
 /* utility functions -------------------------------------------------------- */
 export function formatToIntPlaces(num: number, places: number) {
@@ -10,7 +10,7 @@ export function formatToIntPlaces(num: number, places: number) {
     return ret;
 }
 
-export function getTimerWithDefVals(ts: TimerStyle) {
+export function getTimerWithDefVals(ts: TimerStyle): TimerChild {
     const tmrTitles= getTimersCpy().map((tmr) => tmr.title);
 
     // pick title
@@ -35,7 +35,7 @@ export function getTimerWithDefVals(ts: TimerStyle) {
     return ret;
 }
 
-function extractTimerFromEditPage(editPageW: HTMLFormElement): Timer {
+function extractTimerFromEditPage(editPageW: HTMLFormElement): TimerChild {
     const textReprOfTimerStyle = (editPageW.querySelector("input[name=timer-type-group]:checked") as HTMLInputElement).dataset.timerType;
     //const timerStyle = TimerStyle.instances.filter((ins) => ins.textRepresentation === textReprOfTimerStyle)[0];
 
