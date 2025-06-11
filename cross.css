@@ -1,0 +1,116 @@
+body {
+    --cross-thickness-val: 5;
+    --cross-thickness-perc: 5%;
+
+    --cross-height-val: 70;
+    --cross-height-perc: 70%;
+
+    --cross-anim-time: 4s;
+    --cross-anim-wait: 2s;
+}
+
+.crossFgColored {
+    fill: var(--fg-color);
+}
+
+.crossBgColored {
+    fill: var(--bg-color);
+}
+
+.crossVerticalTrunk {
+    x: calc(50% - var(--cross-thickness-perc)/2);
+    y: calc(calc(100% - var(--cross-height-perc))/2);
+    width: var(--cross-thickness-perc);
+    height: var(--cross-height-perc);
+}
+
+.crossHorizontalTrunk {
+    x: calc(50% - calc(var(--cross-height-perc)/2)/2);
+    y: calc(50% - var(--cross-thickness-perc)*3);
+    height: var(--cross-thickness-perc);
+    width: calc(var(--cross-height-perc)/2);
+}
+
+.crossBeam > .crossVerticalTrunk {
+    animation: var(--cross-anim-time) linear var(--cross-anim-wait) infinite normal cross-beam-anim-vert;
+}
+
+.crossBeam > .crossHorizontalTrunk {
+    animation: var(--cross-anim-time) linear var(--cross-anim-wait) infinite normal cross-beam-anim-horiz;
+}
+
+.crossBeamEraser > .crossVerticalTrunk {
+    animation: var(--cross-anim-time) linear var(--cross-anim-wait) infinite normal cross-beam-eraser-anim-vert;
+}
+
+.crossBeamEraser > .crossHorizontalTrunk {
+    animation: var(--cross-anim-time) linear var(--cross-anim-wait) infinite normal cross-beam-eraser-anim-horiz;
+}
+
+@keyframes cross-beam-anim-vert {
+    from {
+        x: calc(50% - var(--cross-thickness-perc)/2);
+        y: calc(calc(100% - var(--cross-height-perc))/2);
+        width: var(--cross-thickness-perc);
+        height: var(--cross-height-perc);
+    }
+    42%, to {
+        --cross-thickness-perc: calc(5% * 4);
+        --cross-height-perc: calc(70% + var(--cross-thickness-perc));
+        x: calc(50% - var(--cross-thickness-perc)/2);
+        y: calc(calc(100% - var(--cross-height-perc))/2);
+        width: var(--cross-thickness-perc);
+        height: var(--cross-height-perc);
+    }
+}
+
+@keyframes cross-beam-anim-horiz {
+    from {
+        x: calc(50% - calc(var(--cross-height-perc)/2)/2);
+        y: calc(50% - var(--cross-thickness-perc)*3);
+        height: var(--cross-thickness-perc);
+        width: calc(var(--cross-height-perc)/2);
+    }
+    42%, to {
+        --cross-thickness-perc: calc(5% * 4);
+        --cross-height-perc: calc(70% + var(--cross-thickness-perc));
+        x: calc(50% - calc(var(--cross-height-perc)/2)/2);
+        y: calc(50% - 5%*3 - var(--cross-thickness-perc)/3);
+        height: var(--cross-thickness-perc);
+        width: calc(var(--cross-height-perc)/2);
+    }
+}
+
+@keyframes cross-beam-eraser-anim-vert {
+    from, 8% {
+        x: calc(50% - var(--cross-thickness-perc)/2);
+        y: calc(calc(100% - var(--cross-height-perc))/2);
+        width: var(--cross-thickness-perc);
+        height: var(--cross-height-perc);
+    }
+    50%, to {
+        --cross-thickness-perc: calc(5% * 4);
+        --cross-height-perc: calc(70% + var(--cross-thickness-perc));
+        x: calc(50% - var(--cross-thickness-perc)/2);
+        y: calc(calc(100% - var(--cross-height-perc))/2);
+        width: var(--cross-thickness-perc);
+        height: var(--cross-height-perc);
+    }
+}
+
+@keyframes cross-beam-eraser-anim-horiz {
+    from, 8% {
+        x: calc(50% - calc(var(--cross-height-perc)/2)/2);
+        y: calc(50% - var(--cross-thickness-perc)*3);
+        height: var(--cross-thickness-perc);
+        width: calc(var(--cross-height-perc)/2);
+    }
+    50%, to {
+        --cross-thickness-perc: calc(5% * 4);
+        --cross-height-perc: calc(70% + var(--cross-thickness-perc));
+        x: calc(50% - calc(var(--cross-height-perc)/2)/2);
+        y: calc(50% - 5%*3 - var(--cross-thickness-perc)/3);
+        height: var(--cross-thickness-perc);
+        width: calc(var(--cross-height-perc)/2);
+    }
+}
