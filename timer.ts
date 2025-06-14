@@ -12,3 +12,12 @@ updateShowing(new Array(...getShowingCpy(), timerId as timerId_t));
 showActivity(timerId as timerId_t); // will run until the window / tab is closed
 
 window.addEventListener("storage", checkTimerState);
+
+const timer = getTimersCpy().filter((tmr) => tmr.id === timerId)[0];
+const svg = document.querySelector("svg");
+svg && (svg.dataset.timerType = timer.getStyle());
+function repeatedVisualizationUpdate() {
+    svg && timer.updateDisplayed(svg);
+    requestAnimationFrame(repeatedVisualizationUpdate);
+}
+repeatedVisualizationUpdate();

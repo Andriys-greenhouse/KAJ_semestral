@@ -1,41 +1,41 @@
-body {
+[data-timer-type="horizontal"] {
     --segment-width: 70%;
     --segment-height: 30%;
     --width-addition: 5%;
-}
 
-#backRect {
-    fill: grey;
-}
+    #backRect {
+        fill: grey;
+    }
 
-#backFrameRect {
-    rx: 5px;
-    x: calc(50% - calc(var(--segment-width) + var(--width-addition))/2);
-    y: calc(50% - calc(var(--segment-height) + var(--width-addition))/2);
-    height: calc(var(--segment-height) + var(--width-addition));
-    width: calc(var(--segment-width) + var(--width-addition));
-}
+    #backFrameRect {
+        rx: 5px;
+        x: calc(50% - calc(var(--segment-width) + var(--width-addition))/2);
+        y: calc(50% - calc(var(--segment-height) + var(--width-addition))/2);
+        height: calc(var(--segment-height) + var(--width-addition));
+        width: calc(var(--segment-width) + var(--width-addition));
+    }
 
-.segmentLike {
-    x: calc(50% - var(--segment-width)/2);
-    y: calc(50% - var(--segment-height)/2);
-    height: var(--segment-height);
-    width: var(--segment-width);
-}
+    .segmentLike {
+        x: calc(50% - var(--segment-width)/2);
+        y: calc(50% - var(--segment-height)/2);
+        height: var(--segment-height);
+        width: var(--segment-width);
+    }
 
-#bottomPannel {
-    fill: gray;
-    x: calc(50% - calc(var(--segment-width) + var(--width-addition))/2);
-    y: calc(50% - calc(var(--segment-height) + var(--width-addition))/2);
-    height: calc(var(--segment-height) + var(--width-addition));
-    width: 5%;
-}
+    #bottomPannel {
+        fill: gray;
+        x: calc(50% - calc(var(--segment-width) + var(--width-addition))/2);
+        y: calc(50% - calc(var(--segment-height) + var(--width-addition))/2);
+        height: calc(var(--segment-height) + var(--width-addition));
+        width: 5%;
+    }
 
-#timerText {
-    fill: white;
-    font: bold 100% serif;
-    transform: translate(50%, 50%);
-    /* from: https://stackoverflow.com/questions/5546346/how-to-place-and-center-text-in-an-svg-rectangle */
-    text-anchor: middle;
-    dominant-baseline: central;
+    #timerText {
+        fill: white;
+        font: bold 100% serif;
+        transform: translate(50%, 50%);
+        /* from: https://stackoverflow.com/questions/5546346/how-to-place-and-center-text-in-an-svg-rectangle */
+        text-anchor: middle;
+        dominant-baseline: central;
+    }
 }
