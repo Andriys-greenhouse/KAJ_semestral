@@ -110,7 +110,7 @@ export function updateTimerList() {
     tmrs.sort((a, b) => a.title < b.title ? -1 : (a.title === b.title ? 0 : 1));
 
     const tileElems = tmrs.map((tmr) => {
-        const tileWrapper = (document.querySelector("#timer-tile-template") as HTMLTemplateElement).content.cloneNode(true) as HTMLLabelElement;
+        const tileWrapper = (document.querySelector("#timer-tile-template") as HTMLTemplateElement).content.firstElementChild.cloneNode(true) as HTMLLabelElement;
         // ! use of the HTML `data attribute` !
         tileWrapper.dataset.timerId = tmr.id;
         tileWrapper.querySelector(".timer-tile-name").textContent = tmr.title;
@@ -133,7 +133,7 @@ export function updateDisplayedList() {
     tmrs.sort((a, b) => a.title < b.title ? -1 : (a.title === b.title ? 0 : 1));
 
     const dispElems = tmrs.map((tmr) => {
-        const dspWrapper = (document.querySelector("#displayed-template") as HTMLTemplateElement).content.cloneNode(true) as HTMLLabelElement;
+        const dspWrapper = (document.querySelector("#displayed-template") as HTMLTemplateElement).content.firstElementChild.cloneNode(true) as HTMLLabelElement;
         // ! use of the HTML `data attribute` !
         dspWrapper.dataset.timerId = tmr.id;
         dspWrapper.querySelector(".displayed-timer-name").textContent = tmr.title;
