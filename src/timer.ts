@@ -14,6 +14,9 @@ showActivity(timerId as timerId_t); // will run until the window / tab is closed
 window.addEventListener("storage", checkTimerState);
 
 const timer = getTimersCpy().filter((tmr) => tmr.id === timerId)[0];
+
+document.querySelector("head title").textContent = timer.title;
+
 const svg = document.querySelector("svg");
 timer.fillSVG(svg);
 function repeatedVisualizationUpdate() {
