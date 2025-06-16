@@ -46,7 +46,7 @@ export class TimerRun {
     timeLeft() {
         for (let tmr of getTimersCpy())
             if (tmr.id === this.timerId)
-                return new TimerTime(tmr.time.seconds - (Date.now() - this.startPoint.getTime()));
+                return new TimerTime(tmr.time.seconds - Math.floor((Date.now() - this.startPoint.getTime())/1000));
     }
 
     togglePause() {
@@ -139,11 +139,12 @@ export class HorizontalTimer extends Timer {
 
     fillSVG(se: SVGElement) {
         const swString = getComputedStyle(se).getPropertyValue("--segment-width");
-        const sw = Number(swString.match(/\d{1-3}/)[0]);
+        const sw = Number(swString.match(/\d{1,3}/)[0]);
 
         // segment elements must be sortied in descending order in respect to their width -- otherwise more narrow `rect` elements would be covered by the wider ones
         const segmentElems = this.segments.sort((ts1, ts2) => -(ts1.timeFracBegin - ts2.timeFracBegin)).map((ts) => {
             const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            rect.classList.add("segmentLike");
             rect.style.setProperty("fill", ts.color);
             rect.style.setProperty("width", `${sw * ts.timeFracBegin}%`);
             return rect;
@@ -162,7 +163,7 @@ export class HorizontalTimer extends Timer {
                 <rect id="bottomPannel"/>
                 <text id="timerText"></text>
             </g>`;
-        se.querySelector("#segmentGroup").replaceChildren(...segmentElems);
+        se.querySelector("#segmentsGroup").replaceChildren(...segmentElems);
 
         this.updateDisplayed(se);
     }
@@ -195,7 +196,7 @@ export class HorizontalTimer extends Timer {
             // set mask width
             //NOTE: this could be done by CSS animation (in the future -- if it is considered benefitial)
             const swString = getComputedStyle(se).getPropertyValue("--segment-width");
-            const sw = Number(swString.match(/\d{1-3}/)[0]);
+            const sw = Number(swString.match(/\d{1,3}/)[0]);
             (se.querySelector("#maskRect") as SVGRectElement).style.setProperty("width", `${sw * timeFrac}%`);
         }
     }

@@ -35,7 +35,7 @@ export function getTimerWithDefVals(ts: TimerStyle): TimerChild {
     return ret;
 }
 
-function extractTimerFromEditPage(editPageW: HTMLFormElement): TimerChild {
+function extractTimerFromEditPage(editPageW: HTMLDivElement): TimerChild {
     const textReprOfTimerStyle = (editPageW.querySelector("input[name=timer-type-group]:checked") as HTMLInputElement).dataset.timerType;
     //const timerStyle = TimerStyle.instances.filter((ins) => ins.textRepresentation === textReprOfTimerStyle)[0];
 
@@ -50,11 +50,11 @@ function extractTimerFromEditPage(editPageW: HTMLFormElement): TimerChild {
 
 // NOTE: this function also activates / deactivates error-indicating elements
 // NOTE: !!! zero seconds is a vallid `TimerTime` !!!
-function checkEditPage(editPageW: HTMLFormElement): boolean {
+function checkEditPage(editPageW: HTMLDivElement): boolean {
     let ret = true;
 
     const titleLabel = editPageW.querySelector("#title-label") as HTMLLabelElement
-    if (0 < (editPageW.querySelector("#title-textfield") as HTMLInputElement).value.length) {
+    if (0 == (editPageW.querySelector("#title-textfield") as HTMLInputElement).value.length) {
         ret = false;
         titleLabel.style.color = getComputedStyle(titleLabel).getPropertyValue("--form-font-color-on-invallid");
     } else {
@@ -110,7 +110,7 @@ export function updateTimerList() {
     tmrs.sort((a, b) => a.title < b.title ? -1 : (a.title === b.title ? 0 : 1));
 
     const tileElems = tmrs.map((tmr) => {
-        const tileWrapper = (document.querySelector("#timer-tile-template") as HTMLTemplateElement).content.firstElementChild.cloneNode(true) as HTMLLabelElement;
+        const tileWrapper = (document.querySelector("#timer-tile-template") as HTMLTemplateElement).content.firstElementChild.cloneNode(true) as HTMLDivElement;
         // ! use of the HTML `data attribute` !
         tileWrapper.dataset.timerId = tmr.id;
         tileWrapper.querySelector(".timer-tile-name").textContent = tmr.title;
@@ -123,7 +123,12 @@ export function updateTimerList() {
         return tileWrapper;
     });
 
-    document.querySelector("#timer-list").replaceChildren(...tileElems);
+    const timerList = document.querySelector("#timer-list");
+    const timerListElChildren = new Array(...timerList.childNodes).filter((nd) => nd instanceof HTMLElement);
+    let updateNeeded = timerListElChildren.length != tileElems.length;
+    for (let ch of timerListElChildren)
+        updateNeeded ||= !tmrs.some((tmr) => tmr.id === (ch as HTMLDivElement).dataset.timerId);
+    updateNeeded && timerList.replaceChildren(...tileElems);
 }
 
 export function updateDisplayedList() {
@@ -133,7 +138,7 @@ export function updateDisplayedList() {
     tmrs.sort((a, b) => a.title < b.title ? -1 : (a.title === b.title ? 0 : 1));
 
     const dispElems = tmrs.map((tmr) => {
-        const dspWrapper = (document.querySelector("#displayed-template") as HTMLTemplateElement).content.firstElementChild.cloneNode(true) as HTMLLabelElement;
+        const dspWrapper = (document.querySelector("#displayed-template") as HTMLTemplateElement).content.firstElementChild.cloneNode(true) as HTMLDivElement;
         // ! use of the HTML `data attribute` !
         dspWrapper.dataset.timerId = tmr.id;
         dspWrapper.querySelector(".displayed-timer-name").textContent = tmr.title;
@@ -164,7 +169,7 @@ export function updateDisplayedList() {
     document.querySelector("#displayed-list").replaceChildren(...dispElems);
 }
 
-export function updateDisplayed(dspWrapper: HTMLLabelElement) {
+export function updateDisplayed(dspWrapper: HTMLDivElement) {
     const tmrId = dspWrapper.dataset.timerId;
     let tmr: Timer;
     for (let t of getTimersCpy())
@@ -183,14 +188,14 @@ export function updateDisplayed(dspWrapper: HTMLLabelElement) {
     styleDisplayedTimerElement(tmr.id, dspWrapper);
 }
 
-function styleDisplayedTimerElement(timerId: timerId_t, wraperElem: HTMLLabelElement) {
+function styleDisplayedTimerElement(timerId: timerId_t, wraperElem: HTMLDivElement) {
     const emphColor = getComputedStyle(wraperElem).getPropertyValue("--displayed-highlight-color");
     const fgColor = getComputedStyle(wraperElem).getPropertyValue("--fg-color");
 
     let visible: HTMLElement[];
     let hidden: HTMLElement[];
     const nameElem = wraperElem.querySelector(".displayed-timer-name") as HTMLHeadingElement;
-    const timeElem = wraperElem.querySelector(".displayed-timer-name") as HTMLLabelElement;
+    const timeElem = wraperElem.querySelector(".displayed-timer-time-left") as HTMLLabelElement;
     const hideBtn = wraperElem.querySelector(".displayed-hide-button") as HTMLButtonElement;
     const startBtn = wraperElem.querySelector(".displayed-start-button") as HTMLButtonElement;
     const pauseBtn = wraperElem.querySelector(".displayed-pause-button") as HTMLButtonElement;
@@ -224,7 +229,7 @@ function styleDisplayedTimerElement(timerId: timerId_t, wraperElem: HTMLLabelEle
 /* frame update functions --------------------------------------------------- */
 export function mainFrameUpdate() {
     document.querySelector("#displayed-list").childNodes.forEach((nd) => {
-        updateDisplayed(nd as HTMLLabelElement);
+        updateDisplayed(nd as HTMLDivElement);
     });
     updateTimezoneLabel();
     updateTimeLabel();
@@ -245,7 +250,7 @@ let editing = false;
 function enterEdit(timerId: timerId_t) {
     editing = true;
 
-    const editPageW = document.querySelector("#edit-page-wrapper") as HTMLFormElement;
+    const editPageW = document.querySelector("#edit-page-wrapper") as HTMLDivElement;
     const timer = getTimersCpy().filter((tmr) => tmr.id === timerId)[0];
 
     editPageW.dataset.timerId = timerId;
@@ -263,6 +268,7 @@ function enterEdit(timerId: timerId_t) {
     });
 
     (document.querySelector("#main-page-wrapper") as HTMLDivElement).style.setProperty("visibility", "hidden");
+    document.querySelectorAll(".timer-tile-label > input:checked").forEach((nd) => {(nd as HTMLInputElement).checked = false;})
     editPageW.style.setProperty("visibility", "visible");
     // TODO: make the rest of adjustments needed for putting the edit mode on
 }
@@ -293,10 +299,11 @@ export function onLoad() {
 }
 
 export function onSaveButtonClick(evnt: Event) {
-    const editPageW = (evnt.currentTarget as Element).closest("#edit-page-wrapper") as HTMLFormElement;
+    const editPageW = (evnt.currentTarget as Element).closest("#edit-page-wrapper") as HTMLDivElement;
     if (checkEditPage(editPageW)) {
-        const timers = getTimersCpy();
-        timers.push(extractTimerFromEditPage(editPageW));
+        const edited = extractTimerFromEditPage(editPageW);
+        const timers = getTimersCpy().filter((tmr) => tmr.id !== edited.id);
+        timers.push(edited);
         updateTimers(timers);
 
         softPopHistoryState();
@@ -328,6 +335,6 @@ export function pollActiveWindows() {
 
 export function showActivity(timerId: timerId_t) {
     addToActiveWindows(timerId);
-    setTimeout(showActivity, hearbeatPeriod);
+    setTimeout(showActivity, hearbeatPeriod, timerId);
 }
 

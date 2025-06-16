@@ -1,4 +1,4 @@
-import { HorizontalTimer, Timer, timerId_t, TimerRun, VerticalTimer, getAsInstanceOfChildClass, TimerStyle, TimerChild } from "./objects"
+import { HorizontalTimer, Timer, timerId_t, TimerTime, TimerRun, VerticalTimer, getAsInstanceOfChildClass, TimerStyle, TimerChild } from "./objects"
 
 class LSOutlineItem {
     name: string;
@@ -61,7 +61,12 @@ export function setupLocalStorage() {
 /* get ---------------------------------------------------------------------- */
 export function getTimersCpy(): TimerChild[] {
     const itm = localStorage.getItem(LSOutline.timers.name);
-    return itm ? JSON.parse(itm).map((tuple: [TimerStyle, Timer]) => getAsInstanceOfChildClass(...tuple)) : [];
+    return itm ? JSON.parse(itm).map((tuple: [TimerStyle, Timer]) => {
+        const nonTime = tuple[1].time;
+        const time = new TimerTime(nonTime.seconds);
+        tuple[1].time = time;
+        return tuple;
+    }).map((tuple: [TimerStyle, Timer]) => getAsInstanceOfChildClass(...tuple)) : [];
 }
 
 export function getShowingCpy(): timerId_t[] {
@@ -71,7 +76,12 @@ export function getShowingCpy(): timerId_t[] {
 
 export function getRunningCpy(): TimerRun[] {
     const itm = localStorage.getItem(LSOutline.running.name);
-    return itm ? JSON.parse(itm) : [];
+    return itm ? JSON.parse(itm).map((obj) => {
+        const tR = new TimerRun(obj.timerId);
+        tR.startPoint = new Date(obj.startPoint);
+        tR.pausedAt = obj.pasedAt ? new Date(obj.pausedAt) : obj.pasedAt;
+        return tR;
+    }) : [];
 }
 
 export function getActiveWindowsCpy(): timerId_t[] {

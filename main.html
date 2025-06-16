@@ -41,7 +41,7 @@
             </div>
             <button id="add-timer-button">+</button>
         </div>
-        <form id="edit-page-wrapper" hidden="true" data-timer-id="">
+        <div id="edit-page-wrapper" data-timer-id="">
             <label id="title-label">
                 <input id="title-textfield" type="text"/>
                 title
@@ -58,24 +58,26 @@
                 <button id="discard-button">discard</button>
                 <button id="save-button">save</button>
             </div>
-        </form>
+        </div>
     </body>
 
     <template id="timer-tile-template">
-        <label class="timer-tile-label-wrapper"
-               data-timer-id="">
-        <!-- nesting of form elements into `label` is also a way of associating the two (https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) -->
-            <h3 class="timer-tile-name"></h3>
-            <input type="radio" name="timer-select-group" hidden="true"/>
-            <!-- following buttons hidden from CSS -->
-            <a target="_blank"><button class="timer-tile-display-button">display</button></a>
-            <button class="timer-tile-edit-button">edit</button>
-            <button class="timer-tile-delete-button">del</button>
-        </label>
+        <div class="timer-tile-wrapper">
+            <label class="timer-tile-label"
+                data-timer-id="">
+                <!-- nesting of form elements into `label` is also a way of associating the two (https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) -->
+                <h3 class="timer-tile-name"></h3>
+                <input type="radio" name="timer-select-group" hidden="true"/>
+            </label>
+                <!-- following buttons hidden from CSS -->
+                <a target="_blank"><button class="timer-tile-display-button">display</button></a>
+                <button class="timer-tile-edit-button">edit</button>
+                <button class="timer-tile-delete-button">del</button>
+        </div>
     </template>
 
     <template id="displayed-template">
-        <label class="displayed-wrapper"
+        <div class="displayed-wrapper"
                data-timer-id="">
             <h3 class="displayed-timer-name"></h3>
             <button class="displayed-hide-button">hide</button>
@@ -84,7 +86,7 @@
             <label class="displayed-timer-time-left"></label>
             <button class="displayed-pause-button">pause</button>
             <button class="displayed-stop-button">stop</button>
-        </label>
+        </div>
     </template>
 
     <script type="module" src="dist/main.js" defer="true"></script>

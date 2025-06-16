@@ -60,7 +60,7 @@
 }
 
 /* timer tile --------------------------------------------------------------- */
-.timer-tile-label-wrapper {
+.timer-tile-wrapper {
     border-radius: var(--border-radius);
     border-color: transparent;
 
@@ -71,7 +71,7 @@
     }
 
     /* from: https://stackoverflow.com/questions/1014861/is-there-a-css-parent-selector */
-    &:has(> input:checked) {
+    &:has(label > input:checked) {
         border-color: var(--active-color);
 
         button {
@@ -83,7 +83,7 @@
         background-color: var(--hover-color);
     }
 
-    .timer-tile-name {
+    .timer-tile-label {
         flex-grow: 1;
     }
 }
