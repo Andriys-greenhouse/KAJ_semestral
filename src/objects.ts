@@ -126,6 +126,7 @@ export class VerticalTimer extends Timer {
     getStyle() { return TimerStyle.vertical; }
 
     fillSVG(se: SVGElement) {
+        se.dataset.timerType = this.getStyle();
         const swString = getComputedStyle(se).getPropertyValue("--segment-height");
         const sw = Number(swString.match(/\d{1,3}/)[0]);
 
@@ -157,7 +158,6 @@ export class VerticalTimer extends Timer {
     }
 
     updateDisplayed(se: SVGElement) {
-        se.dataset.timerType = this.getStyle();
         const running = getRunningCpy();
         const runA = running.filter((tR) => tR.timerId === this.id);
 
@@ -195,6 +195,7 @@ export class HorizontalTimer extends Timer {
     getStyle() { return TimerStyle.horizontal; }
 
     fillSVG(se: SVGElement) {
+        se.dataset.timerType = this.getStyle();
         const swString = getComputedStyle(se).getPropertyValue("--segment-width");
         const sw = Number(swString.match(/\d{1,3}/)[0]);
 

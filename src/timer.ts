@@ -15,7 +15,6 @@ window.addEventListener("storage", checkTimerState);
 
 const timer = getTimersCpy().filter((tmr) => tmr.id === timerId)[0];
 const svg = document.querySelector("svg");
-svg && (svg.dataset.timerType = timer.getStyle());
 timer.fillSVG(svg);
 function repeatedVisualizationUpdate() {
     svg && timer.updateDisplayed(svg);
