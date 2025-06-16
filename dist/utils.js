@@ -127,7 +127,7 @@ export function updateTimerList() {
         // ! use of the HTML `data attribute` !
         tileWrapper.dataset.timerId = tmr.id;
         tileWrapper.querySelector(".timer-tile-name").textContent = tmr.title;
-        tileWrapper.querySelector(".timer-tile-display-button").closest("a").href = `/timer.html?timerId=${tmr.id}`;
+        tileWrapper.querySelector(".timer-tile-display-button").closest("a").href = `/KAJ_semestral/timer.html?timerId=${tmr.id}`;
         tileWrapper.querySelector(".timer-tile-edit-button").addEventListener("click", (evnt) => {
             const timerId = evnt.currentTarget.closest("[data-timer-id]").dataset.timerId;
             enterEdit(timerId);
