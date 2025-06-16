@@ -10,18 +10,18 @@
         <div id="main-page-wrapper">
             <div id="top-bar">
                 <div id="title">
-                    <svg id="crossAnimSVG" viewport="0 0 100 100" width="100" height="100">
+                    <svg id="crossAnimSVG" viewBox="0 0 100 100" width="100" height="100">
                         <g class="crossFgColored crossBeam">
-                            <rect class="crossVerticalTrunk"/>
-                            <rect class="crossHorizontalTrunk"/>
+                            <rect class="crossVerticalTrunk" width="auto" height="auto"/>
+                            <rect class="crossHorizontalTrunk" width="auto" height="auto"/>
                         </g>
                         <g class="crossBgColored crossBeamEraser">
-                            <rect class="crossVerticalTrunk"/>
-                            <rect class="crossHorizontalTrunk"/>
+                            <rect class="crossVerticalTrunk" width="auto" height="auto"/>
+                            <rect class="crossHorizontalTrunk" width="auto" height="auto"/>
                         </g>
                         <g class="crossFgColored">
-                            <rect class="crossVerticalTrunk"/>
-                            <rect class="crossHorizontalTrunk"/>
+                            <rect class="crossVerticalTrunk" width="auto" height="auto"/>
+                            <rect class="crossHorizontalTrunk" width="auto" height="auto"/>
                         </g>
                     </svg>
                     <h1>GTimer</h1>
@@ -46,9 +46,9 @@
                 <input id="title-textfield" type="text"/>
                 title
             </label>
-            <label>
+            <div>
                 time: <input id="hour-textfield" type="number" min="0" placeholder="h"/> : <input id="minute-textfield" type="number" min="0" max="59" placeholder="mm"/> : <input id="second-textfield" type="number" min="0" max="59" placeholder="ss"/>
-            </label>
+            </div>
             <div class="edit-page-column-oriented">
                 <!-- the content of `data-timer-type` attribute of the following `radio` inputs must(/should) be value returned by `getTimerStyleTextRepresentation()` function (see `objects.ts`) and each `radio` button should have a unique one (makes sense in the context of `radio` buttons or not :-) -->
                 style: <label><input type="radio" name="timer-type-group" data-timer-type="horizontal" value="checked"/> horizontal</label>
@@ -59,35 +59,34 @@
                 <button id="save-button">save</button>
             </div>
         </div>
-    </body>
 
-    <template id="timer-tile-template">
-        <div class="timer-tile-wrapper">
-            <label class="timer-tile-label"
+        <template id="timer-tile-template">
+            <div class="timer-tile-wrapper">
+                <label class="timer-tile-label"
+                    data-timer-id="">
+                    <!-- nesting of form elements into `label` is also a way of associating the two (https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) -->
+                    <h3 class="timer-tile-name"></h3>
+                    <input type="radio" name="timer-select-group" hidden="true"/>
+                </label>
+                    <!-- following buttons hidden from CSS -->
+                    <a target="_blank"><button class="timer-tile-display-button">display</button></a>
+                    <button class="timer-tile-edit-button">edit</button>
+                    <button class="timer-tile-delete-button">del</button>
+            </div>
+        </template>
+
+        <template id="displayed-template">
+            <div class="displayed-wrapper"
                 data-timer-id="">
-                <!-- nesting of form elements into `label` is also a way of associating the two (https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form) -->
-                <h3 class="timer-tile-name"></h3>
-                <input type="radio" name="timer-select-group" hidden="true"/>
-            </label>
-                <!-- following buttons hidden from CSS -->
-                <a target="_blank"><button class="timer-tile-display-button">display</button></a>
-                <button class="timer-tile-edit-button">edit</button>
-                <button class="timer-tile-delete-button">del</button>
-        </div>
-    </template>
-
-    <template id="displayed-template">
-        <div class="displayed-wrapper"
-               data-timer-id="">
-            <h3 class="displayed-timer-name"></h3>
-            <button class="displayed-hide-button">hide</button>
-            <button class="displayed-start-button">start</button>
-            <!-- shoul be hidded for not runnning -->
-            <label class="displayed-timer-time-left"></label>
-            <button class="displayed-pause-button">pause</button>
-            <button class="displayed-stop-button">stop</button>
-        </div>
-    </template>
-
-    <script type="module" src="dist/main.js" defer="true"></script>
+                <h3 class="displayed-timer-name"></h3>
+                <button class="displayed-hide-button">hide</button>
+                <button class="displayed-start-button">start</button>
+                <!-- shoul be hidded for not runnning -->
+                <label class="displayed-timer-time-left"></label>
+                <button class="displayed-pause-button">pause</button>
+                <button class="displayed-stop-button">stop</button>
+            </div>
+        </template>
+    </body>
+    <script type="module" src="dist/main.js"></script>
 </html>
