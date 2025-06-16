@@ -42,19 +42,19 @@
             <button id="add-timer-button">+</button>
         </div>
         <div id="edit-page-wrapper" data-timer-id="">
-            <label id="title-label">
+            <label id="title-label" class="edit-page-column-oriented">
                 <input id="title-textfield" type="text"/>
                 title
             </label>
             <label>
                 time: <input id="hour-textfield" type="number" min="0" placeholder="h"/> : <input id="minute-textfield" type="number" min="0" max="59" placeholder="mm"/> : <input id="second-textfield" type="number" min="0" max="59" placeholder="ss"/>
             </label>
-            <div>
+            <div class="edit-page-column-oriented">
                 <!-- the content of `data-timer-type` attribute of the following `radio` inputs must(/should) be value returned by `getTimerStyleTextRepresentation()` function (see `objects.ts`) and each `radio` button should have a unique one (makes sense in the context of `radio` buttons or not :-) -->
                 style: <label><input type="radio" name="timer-type-group" data-timer-type="horizontal" value="checked"/> horizontal</label>
                        <label><input type="radio" name="timer-type-group" data-timer-type="vertical"/> vertical</label>
             </div>
-            <div>
+            <div id="edit-page-button-div">
                 <button id="discard-button">discard</button>
                 <button id="save-button">save</button>
             </div>

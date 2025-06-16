@@ -87,3 +87,24 @@
         flex-grow: 1;
     }
 }
+
+/* edit page ---------------------------------------------------------------- */
+
+#edit-page-wrapper {
+    --e-p-margin: 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    & > * {
+        margin: var(--e-p-margin);
+    }
+}
+
+.edit-page-column-oriented {
+    display: flex;
+    flex-direction: column;
+}
+
+#edit-page-button-div {
+    margin: calc(7 * var(--e-p-margin)) var(--e-p-margin) var(--e-p-margin) var(--e-p-margin);
+}
