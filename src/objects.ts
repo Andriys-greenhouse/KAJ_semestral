@@ -126,11 +126,68 @@ export class VerticalTimer extends Timer {
     getStyle() { return TimerStyle.vertical; }
 
     fillSVG(se: SVGElement) {
-        //TODO: write visualization method
+        const swString = getComputedStyle(se).getPropertyValue("--segment-height");
+        const sw = Number(swString.match(/\d{1,3}/)[0]);
+
+        // segment elements must be sortied in descending order in respect to their width -- otherwise more narrow `rect` elements would be covered by the wider ones
+        const segmentElems = this.segments.sort((ts1, ts2) => -(ts1.timeFracBegin - ts2.timeFracBegin)).map((ts) => {
+            const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            rect.classList.add("segmentLike");
+            rect.style.setProperty("fill", ts.color);
+            rect.style.setProperty("--individual-seg-height", `${sw * ts.timeFracBegin}%`);
+            return rect;
+        });
+
+        se.innerHTML = `
+            <mask id="segmentMask" mask-type="luminance">
+                <rect fill="black" width="100%" height="100%"></rect>
+                <rect id="maskRect" fill="white" class="segmentLike"></rect>
+            </mask>
+            <g id="timerGroup">
+                <rect id="backFrameRect"></rect>
+                <rect id="backRect" class="segmentLike"></rect>
+                <g id="segmentsGroup" mask="url(#segmentMask)">
+                </g>
+                <rect id="bottomPannel"></rect>
+                <text id="timerText"></text>
+            </g>`;
+        se.querySelector("#segmentsGroup").replaceChildren(...segmentElems);
+
+        this.updateDisplayed(se);
     }
 
     updateDisplayed(se: SVGElement) {
-        //TODO: write visualization method
+        se.dataset.timerType = this.getStyle();
+        const running = getRunningCpy();
+        const runA = running.filter((tR) => tR.timerId === this.id);
+
+        if (runA.length > 0 && runA[0].isPaused()) {
+            se.style.setProperty("filter", "grayscale(1)");
+        } else {
+            se.style.setProperty("filter", "grayscale(0)");
+            const timeLeft = runA.length > 0 ? runA[0].timeLeft() : this.time;
+
+            // timer text
+            const timerTextElem = se.querySelector("#timerText") as SVGTextElement;
+            timerTextElem.textContent = timeLeft.getString();
+            timerTextElem.style.setProperty("color", getComputedStyle(timerTextElem).getPropertyValue(timeLeft.seconds < 0 ? "--displayed-highlight-color" : "--fg-color"));
+
+            // back frame 
+            const timeFrac = timeLeft.seconds / this.time.seconds;
+            // Find last whose segment was passed.
+            let minSeg = this.segments[0];
+            for (let seg of this.segments)
+                if (seg.timeFracBegin >= timeFrac && seg.timeFracBegin < minSeg.timeFracBegin)
+                    minSeg = seg;
+
+            (se.querySelector("#backFrameRect") as SVGRectElement).style.setProperty("fill", minSeg.color);
+
+            // set mask height
+            //NOTE: this could be done by CSS animation (in the future -- if it is considered benefitial)
+            const swString = getComputedStyle(se).getPropertyValue("--segment-height");
+            const sw = Number(swString.match(/\d{1,3}/)[0]);
+            (se.querySelector("#maskRect") as SVGRectElement).style.setProperty("--individual-seg-height", `${sw * timeFrac}%`);
+        }
     }
 }
 
