@@ -1,6 +1,6 @@
-import { onOnline, onOffline, onStorage, updateTimerList, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick, pollActiveWindows } from "/dist/utils.js";
-import { getTimersCpy, setupLocalStorage, updateTimers } from "/dist/lsManagement.js";
-import { TimerStyle } from "/dist/objects.js";
+import { onOnline, onOffline, onStorage, updateTimerList, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick, pollActiveWindows } from "/KAJ_semestral/dist/utils.js";
+import { getTimersCpy, setupLocalStorage, updateTimers } from "/KAJ_semestral/dist/lsManagement.js";
+import { TimerStyle } from "/KAJ_semestral/dist/objects.js";
 /* File for setup and initialization of background JS "processes" operating on main page */
 // find out whether online
 addEventListener("offline", onOffline);

@@ -1,5 +1,9 @@
-import { getRunningCpy, getTimersCpy } from "/dist/lsManagement.js";
-import { formatToIntPlaces } from "/dist/utils.js";
+import { getRunningCpy, getTimersCpy } from "/KAJ_semestral/dist/lsManagement.js";
+import { formatToIntPlaces } from "/KAJ_semestral/dist/utils.js";
+/**
+ * An utility class modeling time left on a timer.
+ * @field seconds -- (Possibly negative) integer value representing *seconds* left on a timer. If negative represents elapsed time from timer "ring".
+ */
 export class TimerTime {
     constructor(seconds) {
         this.seconds = Math.floor(seconds); // we want an integer
@@ -10,12 +14,23 @@ export class TimerTime {
     getSeconds() { return Math.floor(this.seconds % 60); }
     getString() { return `${this.seconds < 0 ? "-" : ""}${formatToIntPlaces(Math.abs(this.getHours()), 2)}:${formatToIntPlaces(Math.abs(this.getMinutes()), 2)}:${formatToIntPlaces(Math.abs(this.getSeconds()), 2)}`; }
 }
+/**
+ * Represents a color segment on a timer.
+ * @field timeFracBegin -- Floating point number from interval [0, 1] indicating fraction of the time which this segment should span across.
+ * @field color -- Determines color of the segment.
+ */
 export class TimerSegment {
     constructor(color, timeFracBegin) {
         this.timeFracBegin = timeFracBegin;
         this.color = color;
     }
 }
+/**
+ * Class representing state of some running timer in a given point in time.
+ * @field timerId -- Field for storing an `id` of the timer, whose state in time instance represents.
+ * @field startPoint -- `Date` storing the "timestamp" when the represented timer's countdown started (or of moment from when elapsed time should be computed).
+ * @field pausedAt -- If `null` the represented timer is not paused at the given moment. If the field contains `Date` instance, this `Date` represents "timestamp" at which the timer was stopped.
+ */
 export class TimerRun {
     constructor(timerId) {
         this.timerId = timerId;
@@ -49,6 +64,10 @@ export class TimerRun {
         }
     }
 }
+/**
+ * Enum recotding possible "styles" of timer.
+ * Style of the timer should only effect is's appearance upon displaying.
+ */
 export var TimerStyle;
 (function (TimerStyle) {
     TimerStyle["horizontal"] = "horizontal";
@@ -71,6 +90,13 @@ export function getAsInstanceOfChildClass(ts, tmr) {
     }
     return ret;
 }
+/**
+ * Base class representing a timer.
+ * @field id -- UUID of a given timer.
+ * @field segments -- Segments on a given timer.
+ * @field title -- Title/name of a given timer.
+ * @field time -- Instance of @class TimerTime modeling the total countdown time on a given timer.
+ */
 export class Timer {
     getStyle() { return undefined; }
     constructor(title, time, segments = Timer.defaultSegments) {
@@ -85,6 +111,9 @@ Timer.defaultSegments = [
     new TimerSegment(`rgb(${247}, ${236}, ${24})`, 0.20), // yellow
     new TimerSegment(`rgb(${61}, ${247}, ${24})`, 1), // green
 ];
+/**
+ * Class implementing vertical layout of a timer.
+ */
 export class VerticalTimer extends Timer {
     getStyle() { return TimerStyle.vertical; }
     fillSVG(se) {
@@ -144,6 +173,9 @@ export class VerticalTimer extends Timer {
         }
     }
 }
+/**
+ * Class implementing horizontal layout of a timer.
+ */
 export class HorizontalTimer extends Timer {
     getStyle() { return TimerStyle.horizontal; }
     fillSVG(se) {

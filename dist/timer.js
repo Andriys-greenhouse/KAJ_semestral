@@ -1,8 +1,9 @@
-import { getShowingCpy, getTimersCpy, updateShowing } from "/dist/lsManagement.js";
-import { checkTimerState, showActivity } from "/dist/utils.js";
+import { getShowingCpy, getTimersCpy, updateShowing } from "/KAJ_semestral/dist/lsManagement.js";
+import { checkTimerState, showActivity } from "/KAJ_semestral/dist/utils.js";
+/* File for setup and initialization of background JS "processes" operating on timer-displaying page */
 const timerId = (new URL(location.href)).searchParams.get("timerId");
 if (!timerId || !getTimersCpy().some((tmr) => tmr.id === timerId))
-    window.close();
+    window.close(); // this page might not have been opened in the intended (from link on main page)
 updateShowing(new Array(...getShowingCpy(), timerId));
 showActivity(timerId); // will run until the window / tab is closed
 window.addEventListener("storage", checkTimerState);

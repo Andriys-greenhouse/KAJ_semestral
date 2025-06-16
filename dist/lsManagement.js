@@ -1,4 +1,4 @@
-import { TimerTime, TimerRun, getAsInstanceOfChildClass } from "/dist/objects.js";
+import { TimerTime, TimerRun, getAsInstanceOfChildClass } from "/KAJ_semestral/dist/objects.js";
 /**
  * Class used as a "record" about "sections" in `localStorage` of this page.
  * `localStorage` of this page is split into "sections" represented by
@@ -6,9 +6,9 @@ import { TimerTime, TimerRun, getAsInstanceOfChildClass } from "/dist/objects.js
  * stores information about timers between sessions and other sections are
  * used for communication between tabs.
  *
- * @field name -- key under which given "section" can be found in the `localStorage`
- * @field defaultVal -- if the @field name is not present in the `localStorage` or contents of the "section" are ment to be set to intended default/initial value, this field determines it's value
- * @field resetOnPageLoad -- field determining whether the "section" should be set to its default/initial value (determined by @field defaultVal) even if it is found saved in the `localStorage` from the previous session
+ * @field name -- Key under which given "section" can be found in the `localStorage`.
+ * @field defaultVal -- If the @field name is not present in the `localStorage` or contents of the "section" are ment to be set to intended default/initial value, this field determines it's value.
+ * @field resetOnPageLoad -- Field determining whether the "section" should be set to its default/initial value (determined by @field defaultVal) even if it is found saved in the `localStorage` from the previous session.
  */
 class LSOutlineItem {
 }
@@ -57,7 +57,7 @@ export function setupLocalStorage() {
     });
 }
 /* get ---------------------------------------------------------------------- */
-/* funcitons for reading from the `localStorage` */
+/* Funcitons for reading from the `localStorage`. */
 export function getTimersCpy() {
     const itm = localStorage.getItem(LSOutline.timers.name);
     return itm ? JSON.parse(itm).map((tuple) => {
@@ -85,7 +85,7 @@ export function getActiveWindowsCpy() {
     return itm ? JSON.parse(itm) : [];
 }
 /* update / save ------------------------------------------------------------ */
-/* functions for modifying `localStorage` */
+/* Functions for modifying `localStorage`. */
 export function updateTimers(tmrs) {
     localStorage.setItem(LSOutline.timers.name, JSON.stringify(tmrs.map((tmr) => [tmr.getStyle(), tmr])));
 }
