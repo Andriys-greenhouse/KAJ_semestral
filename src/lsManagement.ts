@@ -1,5 +1,16 @@
-import { HorizontalTimer, Timer, timerId_t, TimerTime, TimerRun, VerticalTimer, getAsInstanceOfChildClass, TimerStyle, TimerChild } from "./objects"
+import { Timer, timerId_t, TimerTime, TimerRun, getAsInstanceOfChildClass, TimerStyle, TimerChild } from "./objects"
 
+/**
+ * Class used as a "record" about "sections" in `localStorage` of this page.
+ * `localStorage` of this page is split into "sections" represented by
+ * individual key-value pairs in the `localStorage`. The "timers" section
+ * stores information about timers between sessions and other sections are
+ * used for communication between tabs.
+ * 
+ * @field name -- Key under which given "section" can be found in the `localStorage`.
+ * @field defaultVal -- If the @field name is not present in the `localStorage` or contents of the "section" are ment to be set to intended default/initial value, this field determines it's value.
+ * @field resetOnPageLoad -- Field determining whether the "section" should be set to its default/initial value (determined by @field defaultVal) even if it is found saved in the `localStorage` from the previous session.
+ */
 class LSOutlineItem {
     name: string;
     defaultVal: Object;
@@ -36,11 +47,6 @@ const LSOutline = {
 export function setupLocalStorage() {
     const ois = Object.keys(LSOutline).map((k) => LSOutline[k]);
 
-    /*
-    const desiredFound = [false, false, false];
-    const defaultVals = desiredFields.map((f) => LSOutline[f]);
-    */
-
     // filter elements stored in local storage
     const names = ois.map((oi) => oi.name);
     // with help of: https://duckduckgo.com/?q=js+generate+array+of+indexes+up+to+n&t=ffab&ia=web
@@ -59,6 +65,8 @@ export function setupLocalStorage() {
 }
 
 /* get ---------------------------------------------------------------------- */
+/* Funcitons for reading from the `localStorage`. */
+
 export function getTimersCpy(): TimerChild[] {
     const itm = localStorage.getItem(LSOutline.timers.name);
     return itm ? JSON.parse(itm).map((tuple: [TimerStyle, Timer]) => {
@@ -90,6 +98,8 @@ export function getActiveWindowsCpy(): timerId_t[] {
 }
 
 /* update / save ------------------------------------------------------------ */
+/* Functions for modifying `localStorage`. */
+
 export function updateTimers(tmrs: Timer[]) {
     localStorage.setItem(LSOutline.timers.name, JSON.stringify(tmrs.map((tmr) => [tmr.getStyle(), tmr])));
 }

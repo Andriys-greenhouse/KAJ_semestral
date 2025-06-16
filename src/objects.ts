@@ -7,6 +7,10 @@ type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 type HEX = `#${string}`;
 type Color = RGB | RGBA | HEX;
 
+/**
+ * An utility class modeling time left on a timer.
+ * @field seconds -- (Possibly negative) integer value representing *seconds* left on a timer. If negative represents elapsed time from timer "ring".
+ */
 export class TimerTime {
     seconds: number;
     constructor(seconds: number) {
@@ -21,6 +25,11 @@ export class TimerTime {
     getString() { return `${this.seconds < 0 ? "-" : ""}${formatToIntPlaces(Math.abs(this.getHours()), 2)}:${formatToIntPlaces(Math.abs(this.getMinutes()), 2)}:${formatToIntPlaces(Math.abs(this.getSeconds()), 2)}` }
 }
 
+/**
+ * Represents a color segment on a timer.
+ * @field timeFracBegin -- Floating point number from interval [0, 1] indicating fraction of the time which this segment should span across.
+ * @field color -- Determines color of the segment.
+ */
 export class TimerSegment {
     timeFracBegin: number; // floating point number from interval [0, 1] indicating how much of overall timer time should the segment become active
     color: Color;
@@ -31,6 +40,12 @@ export class TimerSegment {
     }
 }
 
+/**
+ * Class representing state of some running timer in a given point in time.
+ * @field timerId -- Field for storing an `id` of the timer, whose state in time instance represents.
+ * @field startPoint -- `Date` storing the "timestamp" when the represented timer's countdown started (or of moment from when elapsed time should be computed).
+ * @field pausedAt -- If `null` the represented timer is not paused at the given moment. If the field contains `Date` instance, this `Date` represents "timestamp" at which the timer was stopped.
+ */
 export class TimerRun {
     timerId: timerId_t;
     startPoint: Date;
@@ -73,6 +88,10 @@ export class TimerRun {
     }
 }
 
+/**
+ * Enum recotding possible "styles" of timer.
+ * Style of the timer should only effect is's appearance upon displaying.
+ */
 export enum TimerStyle {
     horizontal = "horizontal", vertical = "vertical"
 }
@@ -98,6 +117,13 @@ export function getAsInstanceOfChildClass(ts: TimerStyle, tmr: Timer): TimerChil
 
 export type timerId_t = string;
 
+/**
+ * Base class representing a timer.
+ * @field id -- UUID of a given timer.
+ * @field segments -- Segments on a given timer.
+ * @field title -- Title/name of a given timer.
+ * @field time -- Instance of @class TimerTime modeling the total countdown time on a given timer.
+ */
 export class Timer {
     static defaultSegments: TimerSegment[] = [
         new TimerSegment(`rgb(${252}, ${42}, ${5})`, 0.05), // red
@@ -120,8 +146,14 @@ export class Timer {
     // define `fillSVG(svgElem)` in all children
 }
 
+/**
+ * Type summariziong all classes inheriting from @class Timer considered to represent different timer styles.
+ */
 export type TimerChild = HorizontalTimer | VerticalTimer;
 
+/**
+ * Class implementing vertical layout of a timer.
+ */
 export class VerticalTimer extends Timer {
     getStyle() { return TimerStyle.vertical; }
 
@@ -191,6 +223,9 @@ export class VerticalTimer extends Timer {
     }
 }
 
+/**
+ * Class implementing horizontal layout of a timer.
+ */
 export class HorizontalTimer extends Timer {
     getStyle() { return TimerStyle.horizontal; }
 

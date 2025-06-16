@@ -35,6 +35,12 @@ export function getTimerWithDefVals(ts: TimerStyle): TimerChild {
     return ret;
 }
 
+/**
+ * Function for "parsing" of values entered on the "edit page".
+ * No checks are performed!
+ * @param editPageW Wrapper element of the "edit page" (id="edit-page-wrapper" in `main.html`).
+ * @returns Instance of @class Timer containing "extracted" values.
+ */
 function extractTimerFromEditPage(editPageW: HTMLDivElement): TimerChild {
     const textReprOfTimerStyle = (editPageW.querySelector("input[name=timer-type-group]:checked") as HTMLInputElement).dataset.timerType;
     //const timerStyle = TimerStyle.instances.filter((ins) => ins.textRepresentation === textReprOfTimerStyle)[0];
@@ -50,6 +56,11 @@ function extractTimerFromEditPage(editPageW: HTMLDivElement): TimerChild {
 
 // NOTE: this function also activates / deactivates error-indicating elements
 // NOTE: !!! zero seconds is a vallid `TimerTime` !!!
+/**
+ * Function for checking validity of values entered on the edit page.
+ * @param editPageW Wrapper element of the "edit page" (id="edit-page-wrapper" in `main.html`).
+ * @returns `true` if entered values are considered vallid.
+ */
 function checkEditPage(editPageW: HTMLDivElement): boolean {
     let ret = true;
 
@@ -84,27 +95,49 @@ export function onOffline(e: Event) {
     }
 }
 
+/**
+ * Function called in response to change in `localStorage` on the main page.
+ */
 export function onStorage() {
     updateTimerList();
     updateDisplayedList();
 }
 
+/**
+ * Function called on timer-displaying page in response to "storage" event on the `window`.
+ * Closes the tab displaying the timer if the timer should no longer be shown (for example it was closed from the main page).
+ */
 export function checkTimerState() {
     const timerId = (new URL(location.href)).searchParams.get("timerId"); // we count on that this is not `null`
     !getShowingCpy().some((sId) => sId === timerId) && window.close(); // if window is supposed to be closed
 }
 
 /* element update functions ------------------------------------------------- */
+/**
+ * Function for updating content of the label displaying time zone (on the main page).
+ * (Meant to be called periodically.)
+ */
 export function updateTimezoneLabel() {
     const timezoneNum = Math.floor(-1 * new Date(Date.now()).getTimezoneOffset() / 60);
     document.querySelector("#timezone-label").textContent = `GMT ${timezoneNum >= 0 ? "+" : ""}${String(timezoneNum)}`;
 }
 
+/**
+ * Function for updating content of the label displaying the actual time (on the main page).
+ * (Meant to be called periodically.)
+ */
 export function updateTimeLabel() {
     const now = new Date(Date.now());
     document.querySelector("#time-label").textContent = `${formatToIntPlaces(now.getHours(), 2)}:${formatToIntPlaces(now.getMinutes(), 2)}`;
 }
 
+/**
+ * Function for updating content of the list of existing timers on the main page.
+ * (Meant to be called periodically.)
+ * If there is no change in composition of saved timers and timers displayed
+ * in the tiler list on the main page (judging by the timer `id`s), this call
+ * has no effect (i.e. no changes to the DOM are made). 
+ */
 export function updateTimerList() {
     const tmrs = getTimersCpy(); // copying is not needed
     tmrs.sort((a, b) => a.title < b.title ? -1 : (a.title === b.title ? 0 : 1));
@@ -127,10 +160,15 @@ export function updateTimerList() {
     const timerListElChildren = new Array(...timerList.childNodes).filter((nd) => nd instanceof HTMLElement);
     let updateNeeded = timerListElChildren.length != tileElems.length;
     for (let ch of timerListElChildren)
-        updateNeeded ||= !tmrs.some((tmr) => tmr.id === (ch as HTMLDivElement).dataset.timerId);
+        updateNeeded ||= !tmrs.some((tmr) => tmr.id === (ch as HTMLDivElement).dataset.timerId); // TODO: add conparisson of names as well upon encountering timer with a matching ID
     updateNeeded && timerList.replaceChildren(...tileElems);
 }
 
+/**
+ * Function for updating content of the list of currently displayed timers on the main page.
+ * (Meant to be called periodically.)
+ * Replaces children of the `#displayed-list` element on the main page with children containing the current state.
+ */
 export function updateDisplayedList() {
     //NOTE: !! assumption: set of timers that are "running" is a subset of timers which are "showing" !!
     const ids = getShowingCpy(); // copying is not needed
@@ -169,6 +207,10 @@ export function updateDisplayedList() {
     document.querySelector("#displayed-list").replaceChildren(...dispElems);
 }
 
+/**
+ * Update of a contents of a particular element convaying information about a displayed or running timer.
+ * @param dspWrapper Element whose contents should be updated. (Element in form given by `#displayed-template` template element is expected.)
+ */
 export function updateDisplayed(dspWrapper: HTMLDivElement) {
     const tmrId = dspWrapper.dataset.timerId;
     let tmr: Timer;
@@ -188,6 +230,11 @@ export function updateDisplayed(dspWrapper: HTMLDivElement) {
     styleDisplayedTimerElement(tmr.id, dspWrapper);
 }
 
+/**
+ * Function for updating styles of particular element convaying information about a displayed or running timer.
+ * @param timerId Id of a timer whose information is being displayed in the given element.
+ * @param wraperElem Element whose contents should be updated. (Element in form given by `#displayed-template` template element is expected.)
+ */
 function styleDisplayedTimerElement(timerId: timerId_t, wraperElem: HTMLDivElement) {
     const emphColor = getComputedStyle(wraperElem).getPropertyValue("--displayed-highlight-color");
     const fgColor = getComputedStyle(wraperElem).getPropertyValue("--fg-color");
@@ -227,6 +274,10 @@ function styleDisplayedTimerElement(timerId: timerId_t, wraperElem: HTMLDivEleme
 }
 
 /* frame update functions --------------------------------------------------- */
+/**
+ * Function reflecting changes in the information at the main page, which are not connected to changes in `localStorage`.
+ * Calls itself "recursively" (using `requestAnimationFrame` function) until edit page is displayed. 
+ */
 export function mainFrameUpdate() {
     document.querySelector("#displayed-list").childNodes.forEach((nd) => {
         updateDisplayed(nd as HTMLDivElement);
@@ -238,6 +289,10 @@ export function mainFrameUpdate() {
 }
 
 /* controll element handles ------------------------------------------------- */
+/**
+ * Event handler for click on the "delete" button on the record in the list of exisitng/created timers.
+ * @param evnt Event resulting from click on "delete" button on the record displaying existing timer(s).
+ */
 export function onTimerTileDel(evnt: Event) {
     //with the help of: https://stackoverflow.com/questions/29168719/can-you-target-an-elements-parent-element-using-event-target
     const timerId = ((evnt.currentTarget as Element).closest("[data-timer-id]") as HTMLElement).dataset.timerId;
@@ -247,6 +302,10 @@ export function onTimerTileDel(evnt: Event) {
 }
 
 let editing = false;
+/**
+ * Function used to display edit page and hide main page.
+ * @param timerId `id` of the timer, which is supposed to be edited.
+ */
 function enterEdit(timerId: timerId_t) {
     editing = true;
 
@@ -274,6 +333,9 @@ function enterEdit(timerId: timerId_t) {
 }
 
 // NOTE: no saving of modified timer here (we expect it to be done already upon calling this function)
+/**
+ * Function used to display main page and hide edit page.
+ */
 function exitEdit() {
     editing = false;
 
@@ -285,6 +347,9 @@ function exitEdit() {
     // TODO: make the rest of adjustments needed for putting the edit mode off
 }
 
+/**
+ * Function to handle load of page based on user-entered URL.
+ */
 export function onLoad() {
     const url = new URL(location.href);
     const maybeId = url.searchParams.get("timerId");
@@ -298,6 +363,12 @@ export function onLoad() {
     }
 }
 
+/**
+ * Checks info entered to form fields (using @method checkEditPage ) on the
+ * edit page and if check is successfull, updates stored information modified
+ * timer and returns from edit page to main page.
+ * @param evnt Event erousing from click on the "save" button on the edit page.
+ */
 export function onSaveButtonClick(evnt: Event) {
     const editPageW = (evnt.currentTarget as Element).closest("#edit-page-wrapper") as HTMLDivElement;
     if (checkEditPage(editPageW)) {
@@ -310,8 +381,11 @@ export function onSaveButtonClick(evnt: Event) {
     }
 }
 
-/** Function supplementing `pop` of `history`.
- *  (It is possible, that user have loaded this page using URL and that the edit page is the first one loaded -- then `pop`ing from the `history` would not be possible. This function solves this problem.)
+/** 
+ * Function supplementing `pop` of `history`.
+ * (It is possible, that user have loaded this page using URL and that the
+ * edit page is the first one loaded -- then `pop`ing from the `history` would
+ * not be possible. This function solves this problem.)
  */
 export function softPopHistoryState() {
     const url = new URL(location.href);
@@ -323,6 +397,10 @@ export function softPopHistoryState() {
 /* periodical update functions ---------------------------------------------- */
 // polling mechanism for detection of closed windows / tabs introduced due to lack of availibility of `beforeunload` window event on the Safari browser. (With help of: https://stackoverflow.com/questions/13443503/run-javascript-code-on-window-close-or-page-refresh#13443562 .)
 const hearbeatPeriod = 500; // in miliseconds
+/**
+ * Function called from the main window to update information in the `localStorage` concerning windows / tabs closed by the user from the tab's head.
+ * Function calls itself "recursively" (using the `setTimeout` function) to ensure continuous operation.
+ */
 export function pollActiveWindows() {
     const aW = getActiveWindowsCpy();
     updateShowing(getShowingCpy().filter((sTId) => aW.some((aWTId) => sTId === aWTId)));
@@ -333,6 +411,10 @@ export function pollActiveWindows() {
     setTimeout(pollActiveWindows, hearbeatPeriod * 2);
 }
 
+/**
+ * Function called from the tab displaying a timer to indicate to the main page, that it was not closed yet.
+ * @param timerId `id` of the timer displayed in the tab, where this function si called from.
+ */
 export function showActivity(timerId: timerId_t) {
     addToActiveWindows(timerId);
     setTimeout(showActivity, hearbeatPeriod, timerId);

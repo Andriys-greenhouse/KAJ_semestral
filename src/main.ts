@@ -1,6 +1,8 @@
-import { onOnline, onOffline, onStorage, updateTimerList, updateDisplayedList, updateDisplayed, updateTimezoneLabel, updateTimeLabel, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick, pollActiveWindows } from "./utils";
+import { onOnline, onOffline, onStorage, updateTimerList, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick, pollActiveWindows } from "./utils";
 import { getTimersCpy, setupLocalStorage, updateTimers } from "./lsManagement";
 import { TimerStyle } from "./objects";
+
+/* File for setup and initialization of background JS "processes" operating on main page */
 
 // find out whether online
 addEventListener("offline", onOffline);

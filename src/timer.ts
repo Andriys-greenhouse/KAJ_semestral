@@ -2,10 +2,12 @@ import { getShowingCpy, getTimersCpy, updateShowing } from "./lsManagement"
 import { timerId_t } from "./objects";
 import { checkTimerState, showActivity } from "./utils";
 
+/* File for setup and initialization of background JS "processes" operating on timer-displaying page */
+
 const timerId = (new URL(location.href)).searchParams.get("timerId");
 
 if (!timerId || !getTimersCpy().some((tmr) => tmr.id === timerId))
-    window.close();
+    window.close(); // this page might not have been opened in the intended (from link on main page)
 
 updateShowing(new Array(...getShowingCpy(), timerId as timerId_t));
 
