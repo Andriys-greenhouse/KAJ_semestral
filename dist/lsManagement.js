@@ -1,3 +1,4 @@
+// S.J.C.G.(=solo Jesus Christos gloria)
 import { TimerTime, TimerRun, getAsInstanceOfChildClass } from "/KAJ_semestral/dist/objects.js";
 /**
  * Class used as a "record" about "sections" in `localStorage` of this page.
@@ -101,3 +102,4 @@ export function addToActiveWindows(timerId) {
 export function clearActiveWindows() {
     localStorage.setItem(LSOutline.activeWindows.name, JSON.stringify(LSOutline.activeWindows.defaultVal));
 }
+// S.J.C.G.(=solo Jesus Christos gloria)

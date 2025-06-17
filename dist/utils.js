@@ -1,3 +1,4 @@
+// S.J.C.G.(=solo Jesus Christos gloria)
 import { getTimersCpy, getShowingCpy, getRunningCpy, updateTimers, addToActiveWindows, clearActiveWindows, getActiveWindowsCpy, updateShowing, updateRunning } from "/KAJ_semestral/dist/lsManagement.js";
 import { TimerTime, TimerStyle, HorizontalTimer, VerticalTimer, TimerRun } from "/KAJ_semestral/dist/objects.js";
 /* utility functions -------------------------------------------------------- */
@@ -287,6 +288,7 @@ function enterEdit(timerId) {
     document.querySelectorAll(".timer-tile-label > input:checked").forEach((nd) => { nd.checked = false; });
     editPageW.style.setProperty("visibility", "visible");
     // TODO: make the rest of adjustments needed for putting the edit mode on
+    history.pushState(null, null, `/KAJ_semestral/edit?timerId=${timerId}`);
 }
 // NOTE: no saving of modified timer here (we expect it to be done already upon calling this function)
 /**
@@ -367,3 +369,4 @@ export function showActivity(timerId) {
     addToActiveWindows(timerId);
     setTimeout(showActivity, hearbeatPeriod, timerId);
 }
+// S.J.C.G.(=solo Jesus Christos gloria)

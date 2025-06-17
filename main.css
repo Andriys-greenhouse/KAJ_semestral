@@ -1,4 +1,18 @@
 /* main page components ----------------------------------------------------- */
+@media (orientation:portrait) {
+    body {
+        --main-page-w-f-direction: column;
+        --disp-list-f-direction: row;
+    }
+}
+
+@media (orientation:landscape) {
+    body {
+        --main-page-w-f-direction: row;
+        --disp-list-f-direction: column;
+    }
+}
+
 #main-page-wrapper {
     display: flex;
     align-items: stretch;
@@ -6,6 +20,7 @@
     box-sizing: border-box;
     width: 100%;
     height: 100%;
+    flex-direction: var(--main-page-w-f-direction);
 }
 
 #top-bar {
@@ -45,6 +60,7 @@
 #displayed-list {
     margin: auto auto auto 20px;
     display: flex;
+    flex-direction: var(--disp-list-f-direction);
 }
 
 #add-timer-button {
@@ -55,6 +71,7 @@
     right: var(--button-offset);
 
     background-color: var(--add-button-color);
+    color: floralwhite;
     border-radius: var(--border-radius);
     z-index: 1;
 }

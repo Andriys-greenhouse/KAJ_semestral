@@ -1,6 +1,6 @@
 // S.J.C.G.(=solo Jesus Christos gloria)
 
-import { getShowingCpy, getTimersCpy, updateShowing } from "./lsManagement"
+import { getRunningCpy, getShowingCpy, getTimersCpy, updateShowing } from "./lsManagement"
 import { timerId_t } from "./objects";
 import { checkTimerState, showActivity } from "./utils";
 
@@ -23,10 +23,25 @@ document.querySelector("head title").textContent = timer.title;
 
 const svg = document.querySelector("svg");
 timer.fillSVG(svg);
-function repeatedVisualizationUpdate() {
+let lastSeconds = timer.time.seconds;
+function repeatedUpdate() {
     svg && timer.updateDisplayed(svg);
-    requestAnimationFrame(repeatedVisualizationUpdate);
+    requestAnimationFrame(repeatedUpdate);
+
+    const runA = getRunningCpy().filter((tR) => tR.timerId === timer.id);
+    if (runA.length > 0) {
+        const seconds = runA[0].timeLeft().seconds;
+        if (lastSeconds * seconds < 0 || seconds == 0) { //multiplication instead of testing for different signs...
+            try {
+                (document.querySelector("#bellRing") as HTMLAudioElement).play();
+            } catch (e) {
+                console.warn("Can't play audio:", e);
+            }
+        } 
+
+        lastSeconds = seconds;
+    }
 }
-repeatedVisualizationUpdate();
+repeatedUpdate();
 
 // S.J.C.G.(=solo Jesus Christos gloria)

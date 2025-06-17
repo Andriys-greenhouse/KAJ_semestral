@@ -332,6 +332,7 @@ function enterEdit(timerId: timerId_t) {
     document.querySelectorAll(".timer-tile-label > input:checked").forEach((nd) => {(nd as HTMLInputElement).checked = false;})
     editPageW.style.setProperty("visibility", "visible");
     // TODO: make the rest of adjustments needed for putting the edit mode on
+    history.pushState(null, null, `/KAJ_semestral/edit?timerId=${timerId}`);
 }
 
 // NOTE: no saving of modified timer here (we expect it to be done already upon calling this function)

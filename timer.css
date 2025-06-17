@@ -1,0 +1,9 @@
+#sound-effect-source-link {
+    --source-link-offset: 30px;
+
+    position: absolute;
+    bottom: var(--source-link-offset);
+    right: var(--source-link-offset);
+
+    z-index: 1;
+}

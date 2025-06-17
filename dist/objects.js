@@ -1,3 +1,4 @@
+// S.J.C.G.(=solo Jesus Christos gloria)
 import { getRunningCpy, getTimersCpy } from "/KAJ_semestral/dist/lsManagement.js";
 import { formatToIntPlaces } from "/KAJ_semestral/dist/utils.js";
 /**
@@ -235,3 +236,4 @@ export class HorizontalTimer extends Timer {
         }
     }
 }
+// S.J.C.G.(=solo Jesus Christos gloria)
