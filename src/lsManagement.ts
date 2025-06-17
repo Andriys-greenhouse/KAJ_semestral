@@ -1,3 +1,5 @@
+// S.J.C.G.(=solo Jesus Christos gloria)
+
 import { Timer, timerId_t, TimerTime, TimerRun, getAsInstanceOfChildClass, TimerStyle, TimerChild } from "./objects"
 
 /**
@@ -119,3 +121,5 @@ export function addToActiveWindows(timerId: timerId_t) {
 export function clearActiveWindows() {
     localStorage.setItem(LSOutline.activeWindows.name, JSON.stringify(LSOutline.activeWindows.defaultVal));
 }
+
+// S.J.C.G.(=solo Jesus Christos gloria)

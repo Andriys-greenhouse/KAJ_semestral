@@ -1,3 +1,5 @@
+// S.J.C.G.(=solo Jesus Christos gloria)
+
 import { onOnline, onOffline, onStorage, updateTimerList, getTimerWithDefVals, mainFrameUpdate, onLoad, softPopHistoryState, onSaveButtonClick, pollActiveWindows } from "./utils";
 import { getTimersCpy, setupLocalStorage, updateTimers } from "./lsManagement";
 import { TimerStyle } from "./objects";
@@ -40,3 +42,5 @@ onLoad();
 (document.querySelector("#save-button") as HTMLButtonElement).addEventListener("click", onSaveButtonClick);
 
 pollActiveWindows(); // will run until the window / tab is closed
+
+// S.J.C.G.(=solo Jesus Christos gloria)

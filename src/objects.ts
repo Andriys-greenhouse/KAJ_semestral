@@ -1,3 +1,5 @@
+// S.J.C.G.(=solo Jesus Christos gloria)
+
 import { getRunningCpy, getTimersCpy } from "./lsManagement";
 import { formatToIntPlaces } from "./utils";
 
@@ -294,3 +296,5 @@ export class HorizontalTimer extends Timer {
         }
     }
 }
+
+// S.J.C.G.(=solo Jesus Christos gloria)

@@ -1,3 +1,5 @@
+// S.J.C.G.(=solo Jesus Christos gloria)
+
 import { getTimersCpy, getShowingCpy, getRunningCpy, updateTimers, addToActiveWindows, clearActiveWindows, getActiveWindowsCpy, updateShowing, updateRunning } from "./lsManagement";
 import { timerId_t, Timer, TimerTime, TimerStyle, HorizontalTimer, VerticalTimer, TimerChild, TimerRun } from "./objects";
 
@@ -420,3 +422,4 @@ export function showActivity(timerId: timerId_t) {
     setTimeout(showActivity, hearbeatPeriod, timerId);
 }
 
+// S.J.C.G.(=solo Jesus Christos gloria)

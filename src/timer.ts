@@ -1,3 +1,5 @@
+// S.J.C.G.(=solo Jesus Christos gloria)
+
 import { getShowingCpy, getTimersCpy, updateShowing } from "./lsManagement"
 import { timerId_t } from "./objects";
 import { checkTimerState, showActivity } from "./utils";
@@ -26,3 +28,5 @@ function repeatedVisualizationUpdate() {
     requestAnimationFrame(repeatedVisualizationUpdate);
 }
 repeatedVisualizationUpdate();
+
+// S.J.C.G.(=solo Jesus Christos gloria)
